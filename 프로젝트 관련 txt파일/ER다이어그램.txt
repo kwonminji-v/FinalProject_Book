@@ -1,0 +1,187 @@
+CREATE TABLE `qna_board` (
+	`b_Id`	Long	NOT NULL,
+	`b_title`	varchar(255)	NULL,
+	`b_category`	varchar(255)	NULL,
+	`b_write`	varchar(255)	NULL,
+	`b_content`	varchar2(2000)	NULL,
+	`b_date`	date	NULL,
+	`b_views`	Long	NULL,
+	`b_file`	varchar(255)	NULL
+);
+
+CREATE TABLE `c_qna` (
+	`c_Id`	Long	NOT NULL,
+	`b_Id`	Long	NOT NULL,
+	`c_writer`	varchar(255)	NULL,
+	`c_comment_date`	date	NULL,
+	`c_content`	varchar2(2000)	NULL
+);
+
+CREATE TABLE `MEMBER_INFO` (
+	`id`	Long	NOT NULL,
+	`username`	varchar(255)	NULL,
+	`password`	varchar2(300)	NULL,
+	`userId`	varchar2(15)	NULL,
+	`nickname`	varchar(255)	NULL,
+	`userAddress`	varchar(255)	NULL,
+	`email`	varchar2(30)	NULL,
+	`age`	varchar(255)	NULL,
+	`gender`	varchar(255)	NULL,
+	`phone`	varchar(255)	NULL,
+	`userRole`	MemberRole	NULL,
+	`deleteFlag`	varchar(255)	NULL,
+	`userNumber`	varchar(255)	NULL
+);
+
+CREATE TABLE `product_io` (
+	`iono`	Long	NOT NULL,
+	`orderId`	Long	NOT NULL,
+	`bookId`	Long	NOT NULL,
+	`status`	varchar2(10)	NULL,
+	`pDate`	date	NULL,
+	`id`	Long	NOT NULL
+);
+
+CREATE TABLE `review_board` (
+	`reviewId`	Long	NOT NULL,
+	`bookId`	Long	NOT NULL,
+	`r_writer`	varchar(255)	NULL,
+	`r_content`	varchar2(2000)	NULL,
+	`r_original_filename`	varchar(255)	NULL,
+	`r_renamed_filename`	varchar(255)	NULL,
+	`r_date`	date	NULL
+);
+
+CREATE TABLE `order` (
+	`orderId`	LONG	NOT NULL,
+	`userName`	varchar(255)	NULL,
+	`useraddress`	varchar(255)	NULL,
+	`userTel`	varchar(255)	NULL,
+	`res_requirement`	varchar2(100)	NULL,
+	`totalprice`	number	NULL,
+	`orderdate`	date	NULL,
+	`userId`	Long	NOT NULL
+);
+
+CREATE TABLE `cart` (
+	`bookId`	Long	NOT NULL,
+	`title`	varchar(255)	NULL,
+	`amount`	varchar(255)	NULL,
+	`price`	Long	NULL
+);
+
+CREATE TABLE `delete_b_qna` (
+	`b_title`	varchar2(50)	NULL,
+	`b_pwd`	number	NULL,
+	`b_writer`	varchar2(15)	NULL,
+	`b_content`	varchar2(2000)	NULL,
+	`b_date`	date	NULL,
+	`b_readcount`	number	NULL,
+	`b_category`	varchar2(50)	NULL,
+	`pID`	varchar2(30)	NULL,
+	`lock_flag`	char(1)	NULL,
+	`b_no`	number	NULL
+);
+
+CREATE TABLE `delete_c_qna` (
+	`c_writer`	varchar2(15)	NULL,
+	`c_comment_date`	date	NULL,
+	`c_content`	varchar2(2000)	NULL,
+	`c_ref`	number	NULL,
+	`c_no`	number	NULL
+);
+
+CREATE TABLE `delete_b_review` (
+	`b_writer`	varchar2(15)	NULL,
+	`b_content`	varchar2(2000)	NULL,
+	`b_original_filename`	varchar2(100)	NULL,
+	`b_renamed_filename`	varchar2(100)	NULL,
+	`b_date`	date	NULL,
+	`pID`	varchar2(30)	NULL,
+	`b_no`	number	NULL
+);
+
+CREATE TABLE `book` (
+	`bookId`	Long	NOT NULL,
+	`title`	varchar(255)	NOT NULL,
+	`author_id`	varchar(255)	NOT NULL,
+	`publisher_id`	varchar(255)	NOT NULL,
+	`category`	varchar(255)	NOT NULL,
+	`description`	varchar(255)	NOT NULL,
+	`pubdate`	varchar(255)	NOT NULL,
+	`price`	varchar(255)	NOT NULL,
+	`isbn`	varchar(255)	NOT NULL,
+	`Field`	VARCHAR(255)	NULL
+);
+
+ALTER TABLE `qna_board` ADD CONSTRAINT `PK_QNA_BOARD` PRIMARY KEY (
+	`b_Id`
+);
+
+ALTER TABLE `c_qna` ADD CONSTRAINT `PK_C_QNA` PRIMARY KEY (
+	`c_Id`,
+	`b_Id`
+);
+
+ALTER TABLE `MEMBER_INFO` ADD CONSTRAINT `PK_MEMBER_INFO` PRIMARY KEY (
+	`id`
+);
+
+ALTER TABLE `product_io` ADD CONSTRAINT `PK_PRODUCT_IO` PRIMARY KEY (
+	`iono`,
+	`orderId`,
+	`bookId`
+);
+
+ALTER TABLE `review_board` ADD CONSTRAINT `PK_REVIEW_BOARD` PRIMARY KEY (
+	`reviewId`,
+	`bookId`
+);
+
+ALTER TABLE `order` ADD CONSTRAINT `PK_ORDER` PRIMARY KEY (
+	`orderId`
+);
+
+ALTER TABLE `cart` ADD CONSTRAINT `PK_CART` PRIMARY KEY (
+	`bookId`
+);
+
+ALTER TABLE `book` ADD CONSTRAINT `PK_BOOK` PRIMARY KEY (
+	`bookId`
+);
+
+ALTER TABLE `c_qna` ADD CONSTRAINT `FK_qna_board_TO_c_qna_1` FOREIGN KEY (
+	`b_Id`
+)
+REFERENCES `qna_board` (
+	`b_Id`
+);
+
+ALTER TABLE `product_io` ADD CONSTRAINT `FK_order_TO_product_io_1` FOREIGN KEY (
+	`orderId`
+)
+REFERENCES `order` (
+	`orderId`
+);
+
+ALTER TABLE `product_io` ADD CONSTRAINT `FK_book_TO_product_io_1` FOREIGN KEY (
+	`bookId`
+)
+REFERENCES `book` (
+	`bookId`
+);
+
+ALTER TABLE `review_board` ADD CONSTRAINT `FK_book_TO_review_board_1` FOREIGN KEY (
+	`bookId`
+)
+REFERENCES `book` (
+	`bookId`
+);
+
+ALTER TABLE `cart` ADD CONSTRAINT `FK_book_TO_cart_1` FOREIGN KEY (
+	`bookId`
+)
+REFERENCES `book` (
+	`bookId`
+);
+

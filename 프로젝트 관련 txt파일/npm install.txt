@@ -1,0 +1,4 @@
+npm install react-bootstrap bootstrap //부트스트랩
+npm install http-proxy-middleware --save //Proxy 설정 (CORS 오류 방지)
+npm install axios --save //axios 사용 위한 설정
+router 
