@@ -11,18 +11,19 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "board")
 public class BoardEntity extends BaseEntity {
 
     @Id @GeneratedValue
-    private Long b_id;
+    private Long id;
     @Column
-    private String b_title;
+    private String title;
     @Column
-    private String b_category;
+    private String category;
     @Column
-    private String b_writer;
+    private String writer;
     @Column
-    private String b_content;
+    private String content;
 /*    @Column(columnDefinition = "integer default 0")
     private int b_views;
     @Column

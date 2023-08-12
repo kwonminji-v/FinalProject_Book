@@ -17,11 +17,11 @@ public interface BoardService {
     default BoardEntity dtoToEntity(BoardDTO boardDTO) {
 
         BoardEntity boardEntity = BoardEntity.builder()
-                .b_id(boardDTO.getId())
-                .b_title(boardDTO.getTitle())
-                .b_category(boardDTO.getCategory())
-                .b_writer(boardDTO.getWriter())
-                .b_content(boardDTO.getContent())
+                .id(boardDTO.getId())
+                .title(boardDTO.getTitle())
+                .category(boardDTO.getCategory())
+                .writer(boardDTO.getWriter())
+                .content(boardDTO.getContent())
                 .build();
 
         return boardEntity;
@@ -30,11 +30,11 @@ public interface BoardService {
     default BoardDTO entityToDto(BoardEntity boardEntity) {
 
         BoardDTO boardDTO = BoardDTO.builder()
-                .id(boardEntity.getB_id())
-                .title(boardEntity.getB_title())
-                .category(boardEntity.getB_category())
-                .writer(boardEntity.getB_writer())
-                .content(boardEntity.getB_content())
+                .id(boardEntity.getId())
+                .title(boardEntity.getTitle())
+                .category(boardEntity.getCategory())
+                .writer(boardEntity.getWriter())
+                .content(boardEntity.getContent())
                 .build();
 
         return boardDTO;

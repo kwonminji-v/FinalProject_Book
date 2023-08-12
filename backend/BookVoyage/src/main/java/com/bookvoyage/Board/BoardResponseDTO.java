@@ -41,6 +41,8 @@ public class BoardResponseDTO<DTO, EN> {
         this.page = pageable.getPageNumber() + 1; //Paging이 0부터 시작하기 때문에 + 1로 1부터 시작 설정
         this.page = pageable.getPageSize();
 
+        // temp end page
+        // 끝번호를 미리 계산하는 이유 : 시작번호 계산 수월하게 하기위해
         int tempEnd = (int)(Math.ceil(page/10.0)) * 10;
 
         start = tempEnd -9;

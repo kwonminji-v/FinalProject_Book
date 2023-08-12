@@ -19,10 +19,10 @@ public class BoardRepositoryTest {
     public void insertExample() {
         IntStream.rangeClosed(1,5).forEach(i -> {
             BoardEntity boardEntity = BoardEntity.builder()
-                    .b_category("아동 도서" + i)
-                    .b_title("푸바오는 즐거워" + i)
-                    .b_content("푸바오 이야기" + i)
-                    .b_writer("작성자" + (i % 10))
+                    .category("아동 도서" + i)
+                    .title("푸바오는 즐거워" + i)
+                    .content("푸바오 이야기" + i)
+                    .writer("작성자" + (i % 10))
                     .build();
 
             boardRepository.save(boardEntity);

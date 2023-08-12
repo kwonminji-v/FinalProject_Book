@@ -1,4 +1,4 @@
-<!doctype html>
+<!Doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
@@ -6,14 +6,15 @@
     <th:block th:fragment="content">
 
         <h1 class="mt-4">GuestBook 목록 페이지
-            <!--            <span>
-                            <a th:href="@{/templates/board/register}">
-                                <button type="button" class="btn btn-outline-primary">등록</button>
-                            </a>
-                        </span>-->
+            <span>
+                <a th:href="@{/api/board/register}">
+                    <button type="button" class="btn btn-outline-primary">등록</button>
+                </a>
+            </span>
         </h1>
 
     </th:block>
+
 
 </th:block>
 </html>
