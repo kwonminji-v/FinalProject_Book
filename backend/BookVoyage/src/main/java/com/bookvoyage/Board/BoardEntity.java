@@ -24,6 +24,7 @@ public class BoardEntity extends BaseEntity {
     private String writer;
     @Column
     private String content;
+
 /*    @Column(columnDefinition = "integer default 0")
     private int b_views;
     @Column

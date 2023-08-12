@@ -11,12 +11,12 @@ import org.springframework.data.domain.Sort;
 @Data
 @AllArgsConstructor
 @Builder
-public class BoardRequestDTO {
+public class RequestDTO {
 
     private int page;
     private int size;
 
-    public BoardRequestDTO() {
+    public RequestDTO() {
         this.page = 1;
         this.size = 5;
     }

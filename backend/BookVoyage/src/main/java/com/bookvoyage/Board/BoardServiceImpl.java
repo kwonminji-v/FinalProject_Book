@@ -31,12 +31,12 @@ public class BoardServiceImpl implements BoardService{
     /**entityToDTO()를 이용해서 java.util.Function을 생성하고 BoardResponseDTO 구성하는 부분*/
 
     @Override
-    public BoardResponseDTO<BoardDTO, BoardEntity> getList(BoardRequestDTO boardRequestDTO) {
-        Pageable pageable = boardRequestDTO.getPageable(Sort.by("id").descending());
+    public ResponseDTO<BoardDTO, BoardEntity> getList(RequestDTO requestDTO) {
+        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
         Page<BoardEntity> response = boardRepository.findAll(pageable);
         Function<BoardEntity, BoardDTO> fn = (entity -> entityToDto(entity));
 
-        return new BoardResponseDTO<>(response, fn);
+        return new ResponseDTO<>(response, fn);
     }
 
 

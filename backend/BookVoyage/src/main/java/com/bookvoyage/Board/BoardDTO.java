@@ -22,7 +22,8 @@ public class BoardDTO {
     private String writer;
     private String content;
     private LocalDateTime regDate, modDate;
-/*
+
+    /*
     private int views;
     private String file;
     private Member member;
