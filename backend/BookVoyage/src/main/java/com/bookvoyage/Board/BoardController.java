@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-
+/** View와 연결되는 Controller*/
 @Log4j2
 @Controller
 @RequestMapping("api/board")
