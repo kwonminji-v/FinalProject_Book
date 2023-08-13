@@ -29,11 +29,11 @@ public class ResponseDTO<DTO, EN> {
     private boolean prev, next;  //이전, 다음
     private List<Integer> boardList; //페이지 번호 목록
 
-    public ResponseDTO(Page<EN> response , Function<EN,DTO> fn) {
+    public ResponseDTO(Page<EN> result , Function<EN,DTO> fn) {
 
-        dtoList = response.stream().map(fn).collect(Collectors.toList());
-        totalPage = response.getTotalPages();
-        makeBoardList(response.getPageable());
+        dtoList = result.stream().map(fn).collect(Collectors.toList());
+        totalPage = result.getTotalPages();
+        makeBoardList(result.getPageable());
     }
 
     private void makeBoardList(Pageable pageable) {
