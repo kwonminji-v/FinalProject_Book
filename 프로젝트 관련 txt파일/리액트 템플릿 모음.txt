@@ -1,0 +1,86 @@
+======================= 자주 묻는 질문 토글 =======================================
+
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+
+function FAQ() {
+  const faqList = [
+    { question: '질문 1', answer: '답변 1' },
+    { question: '질문 2', answer: '답변 2' },
+    { question: '질문 3', answer: '답변 3' },
+    // 추가적인 질문과 답변
+  ];
+
+  const [expandedId, setExpandedId] = useState(null);
+
+  const handleToggle = (index) => {
+    if (expandedId === index) {
+      setExpandedId(null);
+    } else {
+      setExpandedId(index);
+    }
+  };
+
+  return (
+    <div className="container mt-5">
+      <h1 className="text-center">자주 묻는 질문</h1>
+      <div className="accordion mt-3" id="faqAccordion">
+        {faqList.map((faq, index) => (
+          <div className="accordion-item" key={index}>
+            <h2 className="accordion-header">
+              <button
+                className={`accordion-button ${expandedId === index ? '' : 'collapsed'}`}
+                type="button"
+                onClick={() => handleToggle(index)}
+              >
+                {faq.question}
+              </button>
+            </h2>
+            <div
+              id={`answer${index}`}
+              className={`accordion-collapse collapse ${expandedId === index ? 'show' : ''}`}
+              data-bs-parent="#faqAccordion"
+            >
+              <div className="accordion-body">
+                {faq.answer}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default FAQ;
+
+
+
+
+
+============================== 게시글 입력 Form =====================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

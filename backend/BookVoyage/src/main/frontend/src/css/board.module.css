@@ -1,0 +1,36 @@
+/* App.css */
+/* 게시판 컨테이너 스타일 */
+
+* {
+    font-family: 'NanumSquare';
+}
+@font-face {
+    font-family: 'NanumSquare';
+    src:url("../fonts/NanumSquareEB.ttf");
+}
+
+
+.container {
+    padding-top: 50px;
+}
+
+/* 게시판 제목 스타일 */
+h1 {
+    margin-bottom: 20px;
+}
+
+/* 게시판 테이블 스타일 */
+.table {
+    background-color: #f5f5f5;
+}
+
+/* 게시글 목록 행 스타일 */
+.table tr:hover {
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+/* 새 글 작성 버튼 스타일 */
+.btn-primary {
+    margin-top: 20px;
+}
