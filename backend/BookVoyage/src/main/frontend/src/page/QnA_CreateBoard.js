@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import '../css/board.module.css'
+import EditorComponent from "../component/EditorComponent";
 
 const QnA_CreateBoard = () => {
 
@@ -29,12 +31,18 @@ const QnA_CreateBoard = () => {
 
     }
 
+    /** text-editor 메서드 */
+    function onEditorChange(content) {
+        const cleanContent = content.replace(/<\/?[^>]+(>|$)/g, ''
+        );
+        setContent(cleanContent)
+    }
+
     const handleInputCheck = async(e) => {
         e.preventDefault();
         /** 사용할 입력 필드 초기화 - 새 게시글 작성 시 기존의 입력 내용이 지워지고 새로운 데이터 입력*/
         document.getElementById('category_input').value = ' ';
         document.getElementById('title_input').value = ' ';
-        document.getElementById('content_text').value = ' ';
         document.getElementById('writer_input').value = ' ';
         console.log('게시글 작성');
 
@@ -46,9 +54,9 @@ const QnA_CreateBoard = () => {
             /** 게시글 생성 요청 전송 */
             let response = await axios({
                 method: 'post',
-                url: '/api/create-board',
+                url: '/api/board/create-board',
                 headers : {"Content-Type": 'application/json'}, //JSON형식의 데이터 전송 명시
-                data : JSON.stringify(request_data)
+                data : request_data
             });
 
             console.log("게시글 작성하기의 응답", response);
@@ -56,7 +64,8 @@ const QnA_CreateBoard = () => {
 
             /** 응답에 따라 알럿창으로 알림 */
             if (response.status >= 200 && response.status <= 300) {
-                alert("게시글이 정상적으로 생성되었습니다.")
+                alert("게시글이 정상적으로 생성되었습니다.");
+                // 새 게시글 데이터를 부모 컴포넌트로 전달
             }
             if (response.status >= 400) {
                 alert("게시글 생성이 정상적으로 되지 않았습니다.");
@@ -69,64 +78,74 @@ const QnA_CreateBoard = () => {
         }
     }
 
-    return (
+        return (
         <>
-            <div className="container text-center">
-                <h1 className="mt-5 text-success">글 작성</h1>
-                <div className="row justify-content-center mt-5">
-                    <div className="col-md-8">
-                        <form onSubmit={handleInputCheck}>
-                            <div className="form-group">
-                                <label htmlFor="category">카테고리를 선택하세요</label>
-                                <select
-                                    id="category_input"
-                                    className="form-control"
-                                    value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
-                                >
-                                    <option value="">카테고리 선택</option>
-                                    <option value="주문 및 배송">주문 및 배송</option>
-                                    <option value="교환 및 환불">교환 및 환불</option>
-                                    <option value="회원 가입">회원 가입</option>
-                                    <option value="도서 예약">도서 예약</option>
-                                </select>
+            <div className="container" style={{width:'80vw',justifyContent:'center',display:'flex', flexDirection:'column'}} >
+                <h1 className="mt-5 text-success text-center">글 작성</h1>
+                    <div style={{border:'2px solid #45b751', padding:'20px'}}>
+                        <div className="row justify-content-center mt-5">
+                            <div className="col-md-12">
+                                <form onSubmit={handleInputCheck}>
+                                    <div className="col-md-3 mb-4">
+                                    <div className="form-group">
+                                        <label htmlFor="category">카테고리를 선택하세요</label>
+                                        <select
+                                            id="category_input"
+                                            className="form-control"
+                                            value={category}
+                                            onChange={(e) => setCategory(e.target.value)}
+                                        >
+                                            <option value="">카테고리 선택</option>
+                                            <option value="주문 및 배송">주문 및 배송</option>
+                                            <option value="교환 및 환불">교환 및 환불</option>
+                                            <option value="회원 가입">회원 가입</option>
+                                            <option value="도서 예약">도서 예약</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6 mb-4">
+                                    <div className="form-group">
+                                        <label htmlFor="title">제목을 입력하세요</label>
+                                        <input
+                                            type="text"
+                                            id="title_input"
+                                            className="form-control"
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                        />
+
+                                    </div>
+                                    </div>
+                                    <div className="col-md-8 mb-4">
+                                    <div className="form-group">
+                                        <label htmlFor="content">내용을 입력하세요</label>
+                                        <EditorComponent
+                                                         id="content_text"
+                                                         className="form-control"
+                                                         rows="12"
+                                                         value={content}
+                                                         onChange={onEditorChange} />
+                                    </div>
+                                    </div>
+                                    <div className="col-md-3 mb-4">
+                                    <div className="form-group">
+                                        <label htmlFor="writer">이름을 입력하세요</label>
+                                        <input
+                                            type="text"
+                                            id="writer_input"
+                                            className="form-control"
+                                            value={writer}
+                                            onChange={(e) => setWriter(e.target.value)}
+                                        />
+                                    </div>
+                                    </div>
+                                    <button type="submit" className="btn btn-success" onClick={handleInputCheck}>글 작성</button>
+                                </form>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="title">제목을 입력하세요</label>
-                                <input
-                                    type="text"
-                                    id="title_input"
-                                    className="form-control"
-                                    value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="content">내용을 입력하세요</label>
-                                <textarea
-                                    id="content_text"
-                                    className="form-control"
-                                    rows="5"
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="writer">이름을 입력하세요</label>
-                                <input
-                                    type="text"
-                                    id="writer_input"
-                                    className="form-control"
-                                    value={writer}
-                                    onChange={(e) => setWriter(e.target.value)}
-                                />
-                            </div>
-                            <button type="submit" className="btn btn-success" onClick={handleInputCheck}>글 작성</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </>
+            </>
     )
 }
 

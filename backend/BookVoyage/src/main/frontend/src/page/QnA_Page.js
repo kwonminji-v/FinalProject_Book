@@ -1,85 +1,16 @@
 import { React, useEffect, useState} from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/board.module.css'
 
 
 const QnA_Page = () => {
 
-    const QnA_BoardBox = (props) => {
-        return (
-            <tr>
-                <td style={{ width: '5%' }}>{props.id}</td>
-                <td style={{ width: '15%' }}>{props.category}</td>
-                <td style={{ width: '25%' }}>
-                <td>
-                    <Link
-                        to={{
-                            pathname: `/board/detail/${props.id}`,
-                            state: { id: props.id }
-                        }}
-                    >
-                        {props.title}
-                    </Link>
-                </td>
-                </td>
-                <td>{props.content}</td>
-                <td>{props.writer}</td>
-                <td>{props.view}</td>
-            </tr>
-        );
-    };
-
-
-    const QnA_BoardList = (props) => {
-        return (
-            <div className="container text-center" style={{paddingTop:' 100px'}}>
-                <h1 className="mt-5">문의 게시판</h1>
-                <div className="row justify-content-center mt-5">
-                    <div className="col-md-9">
-                        <table className="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>번호</th>
-                                <th>카테고리</th>
-                                <th>제목</th>
-                                <th>내용</th>
-                                <th>작성자</th>
-                                <th>조회수</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {Array.isArray(props.data) && props.data.length !== 0 ? (
-                                props.data.map((i, index) => (
-                                    <QnA_BoardBox
-                                        key={i.id}
-                                        id={props.data.length - index} //게시글 번호 역순으로 생성
-                                        title={i.title}
-                                        category={i.category}
-                                        content={i.content}
-                                        writer={i.writer}
-                                        view={i.view}
-                                    />
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="6">존재하는 게시글이 없습니다.</td>
-                                </tr>
-                            )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <Link to={"/board/create-board"}>
-                    <input type="button" className="btn btn-success mt-4"  value="게시글 작성하기" />
-                </Link>
-            </div>
-        );
-    };
-
     const [data, setData] = useState("");
     const [isCollapsed, setIsCollapsed] = useState(true);
+
+
     const faqList = [
         { question: '질문 1', answer: '답변 1' },
         { question: '질문 2', answer: '답변 2' },
@@ -100,18 +31,97 @@ const QnA_Page = () => {
     useEffect(() => {
         const getBoardList = async () => {
             console.log('게시글 목록 가져오는 메서드 실행');
-            let response = await axios.get("api/board-list");
+            let response = await axios.get("api/board/board-list");
             console.log('board/response = ', response);
             setData(response.data.data);
         };
         getBoardList();
     },[])
 
+
+
+    const QnA_BoardBox = (props) => {
+        return (
+            <tr>
+                <td style={{ width: '5%' }}>{props.id}</td>
+                <td style={{ width: '15%' }}>{props.category}</td>
+                <td style={{ width: '18%' }}>
+                <td>
+                    <Link
+                        to={{
+                            pathname: `/board/detail/${props.id}`,
+                            state: { id: props.id }
+                        }}
+                    >
+                        {props.title}
+                    </Link>
+                </td>
+                </td>
+                <td style={{ width: '35%' }}>{props.content.includes('.') ? props.content.substring(0,props.content.indexOf('.')+1) : props.content}</td>
+                <td>{props.writer}</td>
+                <td>{props.view}</td>
+                <td>{props.regDate}</td>
+            </tr>
+        );
+    };
+
+
+    const QnA_BoardList = (props) => {
+        return (
+            <div className="container text-center" style={{paddingTop:' 100px'}}>
+                <h1 className="mt-5">문의 게시판</h1>
+                <div className="row justify-content-center mt-5">
+                    <div className="col-md-12">
+                        <table className="table table-bordered table-hover shadow-lg">
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>카테고리</th>
+                                <th>제목</th>
+                                <th>내용</th>
+                                <th>작성자</th>
+                                <th>조회수</th>
+                                <th>작성 일자</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {Array.isArray(props.data) && props.data.length !== 0 ? (
+                                props.data.map((i, index) => (
+                                    <QnA_BoardBox
+                                        key={i.id}
+                                        id={i.id} //게시글 번호 역순으로 생성
+                                        title={i.title}
+                                        category={i.category}
+                                        content={i.content}
+                                        writer={i.writer}
+                                        view={i.view}
+                                        regDate={i.regDate.toLocaleString()}
+                                    />
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="6">존재하는 게시글이 없습니다.</td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <Link to={"/board/create-board"}>
+                    <input type="button" className="btn btn-success mt-4"  value="게시글 작성하기" />
+                </Link>
+            </div>
+        );
+    };
+
+
     return (
         <>
+{/*
             <div className="container mt-5" style={{paddingTop:' 100px'}}>
                 <h1 className="text-center">자주 묻는 질문</h1>
-                <div className="accordion mt-3" id="faqAccordion">
+                <div className="accordion accordion-flush" id="faqAccordion">
+                <div className="col-md-8 mb-4" style={{marginLeft:'200px', border:'2px solid black'}}>
                     {faqList.map((faq, index) => (
                         <div className="accordion-item" key={index}>
                             <h2 className="accordion-header">
@@ -140,11 +150,13 @@ const QnA_Page = () => {
                         </div>
                     ))}
                 </div>
+                </div>
             </div>
+*/}
 
             <QnA_BoardList data = {data} />
 
-            <div className="container mt-md-4" style={{paddingTop:' 100px', marginLeft:'450px'}}>
+            <div className="container mt-md-4" style={{paddingTop:' 100px', marginLeft:'300px'}}>
                 <h2 className="mb-4 text-success">도서 구매 관련 공지사항</h2>
                 <div className="col-md-6 mb-4">
                 <div className="alert alert-info">

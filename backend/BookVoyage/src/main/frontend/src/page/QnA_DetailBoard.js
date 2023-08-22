@@ -10,20 +10,21 @@ const QnA_DetailBoard = () => {
     const [content, setContent] = useState("");
     const [writer, setWriter] = useState("");
     const navigate = useNavigate();
+    const [regDate, setRegDate] = useState(new Date());
     const id = useParams();
-    /*const location = useLocation();*/
-    /*const id = location.state.id;*/
+/*
     console.log('Detail/id = ', id);
+*/
 
 
     const handleDeleteBtnClick = async (e) => {
         e.preventDefault();
         if (window.confirm("게시글을 삭제하시겟습니까?")) {
-            const request_data = {id: id};
+            const request_data = {id:id};
             let response = await axios({
                 method: 'delete',
-                url:'/api/delete-board',
-                headers:{'Content-Type': 'application/json'},
+                url: '/api/delete-board',
+                headers: {'Content-Type': 'application/json'},
                 data: JSON.stringify(request_data)
             });
             console.log("detail/event/response = ", response);
@@ -50,7 +51,7 @@ const QnA_DetailBoard = () => {
      * 즉, id 값이 바뀔 때마다 그에 맞는 게시글 내용을 가져오는 역할을 getDetailBoard 함수에 부여합니다. */
     useEffect(() => {
         const getDetailBoard = async () => {
-            let response = await axios.get(`/api/board-detail/${id.id}`);
+            let response = await axios.get(`/api/board/board-detail/${id.id}`);
             console.log("Detail/response = ", response);
             console.log("detail/response/data = ", response.data);
             console.log("detail/response/data.data = ", response.data.data);
@@ -58,7 +59,6 @@ const QnA_DetailBoard = () => {
             setCategory(response.data.data.category);
             setContent(response.data.data.content);
             setWriter(response.data.data.writer);
-
         }
         getDetailBoard();
     }, [id]);
@@ -77,6 +77,8 @@ const QnA_DetailBoard = () => {
                                 <h3 className="card-subtitle mb-2">분야: {category}</h3>
                                 <p className="card-text">{content}</p>
                                 <p className="card-text">작성자: {writer}</p>
+                                <p className="card-text">작성 일자 : {regDate.toLocaleDateString().replace(/\.$/,'')}</p>
+                                {/*replace() 메서드를 사용하여 이 마침표를 빈 문자열로 대체하여 제거*/}
                                 <Link
                                     to={`/board/update-board/${id.id}`}
                                     className="btn btn-success mr-2"
@@ -86,6 +88,8 @@ const QnA_DetailBoard = () => {
                                         category: category,
                                         content: content,
                                         writer: writer,
+                                        regDate: regDate,
+
                                     }}
                                 >
                                     수정하기
