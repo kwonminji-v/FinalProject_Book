@@ -13,6 +13,7 @@ const QnA_CreateBoard = () => {
     const [regDate, setRegDate] = useState(new Date());
     const [modDate, setModDate] = useState(new Date());
     const [isCollapsed, setIsCollapsed] = useState(true);
+    const [warn, setWarn] = useState(false);
 
     let navigate = useNavigate();  // 다른 Component들로 이동 시에 사용 (Link는 a 태그 개념, Navigation은 함수 실행이 끝나면서, 이동 발생)
 
@@ -42,9 +43,17 @@ const QnA_CreateBoard = () => {
         e.preventDefault();
         /** 사용할 입력 필드 초기화 - 새 게시글 작성 시 기존의 입력 내용이 지워지고 새로운 데이터 입력*/
         document.getElementById('category_input').value = ' ';
+        document.getElementById('category_input').value = ' ';
         document.getElementById('title_input').value = ' ';
         document.getElementById('writer_input').value = ' ';
         console.log('게시글 작성');
+
+        // 필수 필드 체크 및 경고 메시지
+        if (!title || !category || !writer || !content) {
+            setWarn(true);
+            alert("아래의 입력값을 입력해주세요.");
+            return; // 필수 필드가 하나라도 비어있으면 함수 종료
+        }
 
         /** 요청할 데이터 객체 생성 */
         const request_data = {title : title, category:category, content: content, writer:writer};
@@ -71,7 +80,7 @@ const QnA_CreateBoard = () => {
                 alert("게시글 생성이 정상적으로 되지 않았습니다.");
             }
             /** 해당 메서드 실행 완료 후 페이지 전환 */
-            navigate("/board", {});
+            navigate("/home/board", {});
         } catch (err) {
             console.log("게시글 작성하기를 동작하는 기능 에러", err);
             resetInput();
@@ -89,11 +98,15 @@ const QnA_CreateBoard = () => {
                                     <div className="col-md-3 mb-4">
                                     <div className="form-group">
                                         <label htmlFor="category">카테고리를 선택하세요</label>
+
                                         <select
                                             id="category_input"
                                             className="form-control"
                                             value={category}
-                                            onChange={(e) => setCategory(e.target.value)}
+                                            onChange={(e) => {
+                                                setCategory(e.target.value);
+                                                setWarn(false) //카테고리가 선택되면 경고메세지는 사라짐
+                                            }}
                                         >
                                             <option value="">카테고리 선택</option>
                                             <option value="주문 및 배송">주문 및 배송</option>
@@ -101,6 +114,9 @@ const QnA_CreateBoard = () => {
                                             <option value="회원 가입">회원 가입</option>
                                             <option value="도서 예약">도서 예약</option>
                                         </select>
+                                        {warn && category === "" && (
+                                            <div className="text-danger">카테고리를 선택해주세요.</div>
+                                        )}
                                         </div>
                                     </div>
                                     <div className="col-md-6 mb-4">
@@ -111,12 +127,16 @@ const QnA_CreateBoard = () => {
                                             id="title_input"
                                             className="form-control"
                                             value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
+                                            onChange={(e) => {
+                                                setTitle(e.target.value);
+                                                setWarn(false) }}
                                         />
-
+                                        {warn && title === "" && (
+                                            <div className="text-danger">제목을 입력해주세요.</div>
+                                        )}
                                     </div>
                                     </div>
-                                    <div className="col-md-8 mb-4">
+                                    <div className="col-md-7 mb-4">
                                     <div className="form-group">
                                         <label htmlFor="content">내용을 입력하세요</label>
                                         <EditorComponent
@@ -124,7 +144,11 @@ const QnA_CreateBoard = () => {
                                                          className="form-control"
                                                          rows="12"
                                                          value={content}
-                                                         onChange={onEditorChange} />
+                                                         onChange={(newContent) => {
+                                                             onEditorChange(newContent);
+                                                             setWarn(false);
+                                                         }} />
+                                        {warn && content === "" && (<div className="text-danger">내용을 입력해주세요</div>)}
                                     </div>
                                     </div>
                                     <div className="col-md-3 mb-4">
@@ -135,8 +159,13 @@ const QnA_CreateBoard = () => {
                                             id="writer_input"
                                             className="form-control"
                                             value={writer}
-                                            onChange={(e) => setWriter(e.target.value)}
+                                            onChange={(e) => {
+                                                setWriter(e.target.value);
+                                                setWarn(false) }}
                                         />
+                                        {warn && writer === "" && (
+                                            <div className="text-danger">작성자를 입력해주세요</div>
+                                        )}
                                     </div>
                                     </div>
                                     <button type="submit" className="btn btn-success" onClick={handleInputCheck}>글 작성</button>

@@ -2,7 +2,7 @@ package com.kdt.bookvoyage.Board;
 
 
 
-import com.kdt.bookvoyage.Member.MemberEntity;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,7 +19,6 @@ public class BoardDTO {
     private String writer;
     private String content;
     private int view;
-    private MemberEntity member;
     private String regDate, modDate;
     private Long memberId;
 
@@ -35,9 +34,7 @@ public class BoardDTO {
         this.writer = boardEntity.getWriter();
         this.content = boardEntity.getContent();
         this.view = boardEntity.getView();
-        this.member = boardEntity.getMember();
         this.regDate = boardEntity.getRegDate();
         this.modDate = boardEntity.getModDate();
-        this.memberId = boardEntity.getMember().getId();
     }
 }

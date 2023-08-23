@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {Link, useNavigate, useParams} from "react-router-dom";
 
-
 const QnA_DetailBoard = () => {
 
     const [title, setTitle] = useState("");
@@ -11,24 +10,21 @@ const QnA_DetailBoard = () => {
     const [writer, setWriter] = useState("");
     const navigate = useNavigate();
     const [regDate, setRegDate] = useState(new Date());
-    const id = useParams();
-/*
-    console.log('Detail/id = ', id);
-*/
+    const { id } = useParams();
 
 
     const handleDeleteBtnClick = async (e) => {
         e.preventDefault();
         if (window.confirm("게시글을 삭제하시겟습니까?")) {
-            const request_data = {id:id};
+            const request_data = {id: id};
             let response = await axios({
                 method: 'delete',
-                url: '/api/delete-board',
+                url: '/api/board/delete-board',
                 headers: {'Content-Type': 'application/json'},
                 data: JSON.stringify(request_data)
             });
             console.log("detail/event/response = ", response);
-            navigate("/board", { });
+            navigate("/home/board", { });
             //확인을 누르는 순간 navigate를 통해서 Route로 설정된 board 페이지로 이동
             if(response.status === 204) {
                 //게시물 삭제가 성공적으로 실행
@@ -51,7 +47,7 @@ const QnA_DetailBoard = () => {
      * 즉, id 값이 바뀔 때마다 그에 맞는 게시글 내용을 가져오는 역할을 getDetailBoard 함수에 부여합니다. */
     useEffect(() => {
         const getDetailBoard = async () => {
-            let response = await axios.get(`/api/board/board-detail/${id.id}`);
+            let response = await axios.get(`/api/board/board-detail/${id}`);
             console.log("Detail/response = ", response);
             console.log("detail/response/data = ", response.data);
             console.log("detail/response/data.data = ", response.data.data);
@@ -65,22 +61,24 @@ const QnA_DetailBoard = () => {
 
     return (
         <>
-
-            <div className="container mt-5">
-                <div className="row">
-                    <div className="col-md-8 offset-md-2">
+            <div className="containert
+            " style={{border:"2px solid black", marginBottom:"100px"}}>
+                <div className="row justify-content-center">
+                    <div className="col-md-8">
                         <div className="card">
                             <div className="card-header bg-transparent">
-                                <h1 className="card-title">{title}</h1>
+                                <h2 className="card-subtitle mb-2">분야: {category}</h2>
                             </div>
                             <div className="card-body">
-                                <h3 className="card-subtitle mb-2">분야: {category}</h3>
+                                <h4 className="card-title">{title}</h4>
                                 <p className="card-text">{content}</p>
                                 <p className="card-text">작성자: {writer}</p>
                                 <p className="card-text">작성 일자 : {regDate.toLocaleDateString().replace(/\.$/,'')}</p>
                                 {/*replace() 메서드를 사용하여 이 마침표를 빈 문자열로 대체하여 제거*/}
+                                <div className="card-footer">
+                                    <div className="btn-group">
                                 <Link
-                                    to={`/board/update-board/${id.id}`}
+                                    to={`/home/board/update-board/${id}`}
                                     className="btn btn-success mr-2"
                                     state={{
                                         id: id,
@@ -89,7 +87,6 @@ const QnA_DetailBoard = () => {
                                         content: content,
                                         writer: writer,
                                         regDate: regDate,
-
                                     }}
                                 >
                                     수정하기
@@ -97,12 +94,26 @@ const QnA_DetailBoard = () => {
                                 <input
                                     type="button"
                                     onClick={handleDeleteBtnClick}
-                                    className="btn btn-success mr-2"
+                                    className="btn btn-danger mr-2"
                                     value="삭제하기"
                                 />
-                                <Link to="/board" className="btn btn-success mr-2">
+                                <Link to="/home/board" className="btn btn-secondary mr-2">
                                     목록 보기
                                 </Link>
+                                </div>
+                                </div>
+                            </div>
+                            <div className="card-body" id="comment-section">
+                                <h3>댓글</h3>
+                                <ul className="comment-list" id="commentList">
+                                    <li>asfsafaascasdas</li>
+                                </ul>
+                            <div className="comment-form">
+                                <h4>댓글 작성</h4>
+                                <input type="text" id="commentInput" className="form-control mb-2"
+                                       placeholder="댓글을 입력하세요" />
+                                    <button id="commentSubmit" className="btn btn-primary">댓글 작성</button>
+                            </div>
                             </div>
                         </div>
                     </div>

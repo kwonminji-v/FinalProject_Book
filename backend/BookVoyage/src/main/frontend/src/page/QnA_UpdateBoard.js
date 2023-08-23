@@ -1,6 +1,7 @@
 import {React, useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useLocation, useParams} from "react-router-dom";
+import EditorComponent from "../component/EditorComponent";
 
 const QnA_UpdateBoard = () => {
 
@@ -11,6 +12,7 @@ const QnA_UpdateBoard = () => {
     let location = useLocation();
     let navigate = useNavigate();
     const { id} = useParams();
+    const [warn, setWarn] = useState(false);
     console.log('업데이트 = ', id);
     console.log('UpdateBoard/location.state : ', location.state);
 
@@ -31,14 +33,31 @@ const QnA_UpdateBoard = () => {
         document.getElementById('content_text').value = ' ';
     }
 
+    /** text-editor 메서드 */
+    function onEditorChange(content) {
+        const cleanContent = content.replace(/<\/?[^>]+(>|$)/g, ''
+        );
+        setContent(cleanContent)
+    }
+
+
     const handleEditClick = async (e) => {
         e.preventDefault();
         document.getElementById('title_input').value = ' ';
         document.getElementById('category_input').value = ' ';
+/*
         document.getElementById('content_text').value = ' ';
+*/
         console.log('게시글 작성')
         const request_data = {id: id, title:title, category:category, content:content, regDate:regDate};
         console.log("업데이트 아이디" + id);
+
+        // 필수 필드 체크 및 경고 메시지
+        if (!title || !category ) {
+            setWarn(true);
+            alert("아래의 입력값을 입력해주세요.");
+            return; // 필수 필드가 하나라도 비어있으면 함수 종료
+        }
 
         /** 수정하기 버튼을 누름과 동시에 api에 요청할 작업 */
          try {
@@ -49,7 +68,8 @@ const QnA_UpdateBoard = () => {
                 data: JSON.stringify(request_data)
 
             });
-             navigate(`/board/detail/${id}`);
+             alert("수정사항이 저장되었습니다.");
+             navigate(`/home/board/detail/${id}`);
              console.log("response 내놔 = " , response);
          } catch (err) {
              console.log("게시글 생성 에러",  err);
@@ -68,45 +88,62 @@ const QnA_UpdateBoard = () => {
         <>
             <div className="container mt-5">
                 <div className="form">
-                    <div className="col-md-6 mb-4">
-                    <label htmlFor="title_input">글 제목</label>
-                        <input
-                        id="title_input"
-                        type="text"
-                        className="form-control"
-                        placeholder="수정할 제목을 입력해주세요"
-                        value={title}
-                        onChange={(e) => {
-                            setTitle(e.target.value)
-                            console.log(title);}}
-                    />
-
-                    </div>
-                    <div className="col-md-6 mb-4">
-                    <label htmlFor="category_input">카테고리</label>
-                        <select
-                            id="category_input"
-                            className="form-control"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                        >
-                            <option value="">카테고리 선택</option>
-                            <option value="주문 및 배송">주문 및 배송</option>
-                            <option value="교환 및 환불">교환 및 환불</option>
-                            <option value="회원 가입">회원 가입</option>
-                            <option value="도서 예약">도서 예약</option>
-                        </select>
+                    <div className="col-md-3 mb-4">
+                        <div className="form-group">
+                            <label htmlFor="category">카테고리를 선택하세요</label>
+                            <select
+                                id="category_input"
+                                className="form-control"
+                                value={category}
+                                onChange={(e) => {
+                                    setCategory(e.target.value);
+                                    setWarn(false) //카테고리가 선택되면 경고메세지는 사라짐
+                                }}
+                            >
+                                <option value="">카테고리 선택</option>
+                                <option value="주문 및 배송">주문 및 배송</option>
+                                <option value="교환 및 환불">교환 및 환불</option>
+                                <option value="회원 가입">회원 가입</option>
+                                <option value="도서 예약">도서 예약</option>
+                            </select>
+                            {warn && category === "" && (
+                                <div className="text-danger">카테고리를 선택해주세요.</div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="col-md-6 mb-4">
-                    <label htmlFor="content_text">글 내용</label>
-                    <textarea
-                        id="content_text"
-                        className="form-control"
-                        placeholder="수정할 내용을 입력하세요."
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                    />
+                        <div className="form-group">
+                            <label htmlFor="title">제목을 입력하세요</label>
+                            <input
+                                type="text"
+                                id="title_input"
+                                className="form-control"
+                                value={title}
+                                onChange={(e) => {
+                                    setTitle(e.target.value);
+                                    setWarn(false) }}
+                            />
+                            {warn && title === "" && (
+                                <div className="text-danger">제목을 입력해주세요.</div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="col-md-7 mb-4">
+                        <div className="form-group">
+                            <label htmlFor="content">내용을 입력하세요</label>
+                            <EditorComponent
+                                id="content_text"
+                                className="form-control"
+                                rows="12"
+                                value={content}
+                                onChange={(newContent) => {
+                                    onEditorChange(newContent);
+                                    setWarn(false);
+                                }} />
+                            {warn && content === "" && (<div className="text-danger">내용을 입력해주세요</div>)}
+                        </div>
                     </div>
 
                     <div className="col-md-6 mb-4">
@@ -126,3 +163,61 @@ const QnA_UpdateBoard = () => {
     }
 
 export default QnA_UpdateBoard;
+
+
+/*
+<div className="container mt-5">
+    <div className="form">
+        <div className="col-md-6 mb-4">
+            <label htmlFor="title_input">글 제목</label>
+            <input
+                id="title_input"
+                type="text"
+                className="form-control"
+                placeholder="수정할 제목을 입력해주세요"
+                value={title}
+                onChange={(e) => {
+                    setTitle(e.target.value)
+                    console.log(title);}}
+            />
+
+        </div>
+        <div className="col-md-6 mb-4">
+            <label htmlFor="category_input">카테고리</label>
+            <select
+                id="category_input"
+                className="form-control"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+            >
+                <option value="">카테고리 선택</option>
+                <option value="주문 및 배송">주문 및 배송</option>
+                <option value="교환 및 환불">교환 및 환불</option>
+                <option value="회원 가입">회원 가입</option>
+                <option value="도서 예약">도서 예약</option>
+            </select>
+        </div>
+
+        <div className="col-md-6 mb-4">
+            <label htmlFor="content_text">글 내용</label>
+            <textarea
+                id="content_text"
+                className="form-control"
+                placeholder="수정할 내용을 입력하세요."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+            />
+        </div>
+
+        <div className="col-md-6 mb-4">
+            <p>작성자: {pre_writer}</p>
+            <button
+                type="button"
+                className="btn btn-success"
+                onClick={handleEditClick}
+            >
+                게시글 수정
+            </button>
+        </div>
+    </div>
+</div>*/

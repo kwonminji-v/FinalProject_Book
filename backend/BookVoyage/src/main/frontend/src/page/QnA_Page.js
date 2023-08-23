@@ -7,8 +7,12 @@ import '../css/board.module.css'
 
 const QnA_Page = () => {
 
-    const [data, setData] = useState("");
+    const [data, setData] = useState([]);
     const [isCollapsed, setIsCollapsed] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    console.log(totalPages, currentPage);
+
 
 
     const faqList = [
@@ -31,14 +35,31 @@ const QnA_Page = () => {
     useEffect(() => {
         const getBoardList = async () => {
             console.log('게시글 목록 가져오는 메서드 실행');
-            let response = await axios.get("api/board/board-list");
-            console.log('board/response = ', response);
+            let response = await axios.get(`/api/board/board-list?page=${currentPage}&size=10&sort=id, DESC`);
             setData(response.data.data);
+            setTotalPages(response.data.totalPages);
+            console.log('board/response = ', response);
         };
         getBoardList();
     },[])
 
+    useEffect(() => {
+        fetchData(currentPage);
+    }, [currentPage]);
+    
+    const fetchData = async (page) => {
+        try {
+            const response = await axios.get(`/api/board/board-list?page=${page}&size=10`);
+            setData(response.data.content);
+            setTotalPages(response.data.totalPages);
+        } catch (error) {
+            console.error("페이징 데이터", error);
+        }
+    };
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     const QnA_BoardBox = (props) => {
         return (
@@ -46,29 +67,29 @@ const QnA_Page = () => {
                 <td style={{ width: '5%' }}>{props.id}</td>
                 <td style={{ width: '15%' }}>{props.category}</td>
                 <td style={{ width: '18%' }}>
-                <td>
                     <Link
                         to={{
-                            pathname: `/board/detail/${props.id}`,
+                            pathname: `/home/board/detail/${props.id}`,
                             state: { id: props.id }
                         }}
                     >
                         {props.title}
                     </Link>
                 </td>
-                </td>
                 <td style={{ width: '35%' }}>{props.content.includes('.') ? props.content.substring(0,props.content.indexOf('.')+1) : props.content}</td>
                 <td>{props.writer}</td>
                 <td>{props.view}</td>
                 <td>{props.regDate}</td>
             </tr>
+
         );
     };
 
 
     const QnA_BoardList = (props) => {
+
         return (
-            <div className="container text-center" style={{paddingTop:' 100px'}}>
+            <div className="container text-center" style={{paddingTop:' 100px' , border:'2px solid black'}}>
                 <h1 className="mt-5">문의 게시판</h1>
                 <div className="row justify-content-center mt-5">
                     <div className="col-md-12">
@@ -100,14 +121,38 @@ const QnA_Page = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6">존재하는 게시글이 없습니다.</td>
+                                    <td colSpan="8">존재하는 게시글이 없습니다.</td>
                                 </tr>
                             )}
                             </tbody>
                         </table>
+                        <div className="mt-3 d-flex justify-content-center">
+                            <button
+                                className="btn btn-secondary mx-1"
+                                onClick={() => handlePageChange(0)} // Go to first page
+                            >
+                                &lt;&lt; {/* prev 화살표 */}
+                            </button>
+                            {Array.from({ length: totalPages }, (_, index) => index).map((page) => (
+                                <button
+                                    key={page}
+                                    className={`btn ${page === currentPage ? "btn-success" : "btn-secondary"} mx-1`}
+                                    onClick={() => handlePageChange(page)}
+                                    style={{ margin: "5px" }}
+                                >
+                                    {page + 1}
+                                </button>
+                            ))}
+                            <button
+                                className="btn btn-secondary mx-1"
+                                onClick={() => handlePageChange(totalPages - 1)} // Go to last page
+                            >
+                                &gt;&gt; {/* next 화살표 */}
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <Link to={"/board/create-board"}>
+                <Link to={"/home/board/create-board"}>
                     <input type="button" className="btn btn-success mt-4"  value="게시글 작성하기" />
                 </Link>
             </div>
@@ -117,11 +162,11 @@ const QnA_Page = () => {
 
     return (
         <>
-{/*
-            <div className="container mt-5" style={{paddingTop:' 100px'}}>
+            <div style={{border:'2px solid red', width:'100vw', display:'flex', flexDirection:'column'}}>
+            <div className="container mt-5" style={{paddingTop:' 100px', border:'2px solid black'}}>
                 <h1 className="text-center">자주 묻는 질문</h1>
                 <div className="accordion accordion-flush" id="faqAccordion">
-                <div className="col-md-8 mb-4" style={{marginLeft:'200px', border:'2px solid black'}}>
+                <div className="col-md-8" style={{display:'flex',flexDirection:'column', border:'2px solid black'}}>
                     {faqList.map((faq, index) => (
                         <div className="accordion-item" key={index}>
                             <h2 className="accordion-header">
@@ -151,12 +196,13 @@ const QnA_Page = () => {
                     ))}
                 </div>
                 </div>
-            </div>
-*/}
+
+
 
             <QnA_BoardList data = {data} />
 
-            <div className="container mt-md-4" style={{paddingTop:' 100px', marginLeft:'300px'}}>
+            <div className="container mt-4" style={{ border:'2px solid black', paddingTop: '100px', minHeight: 'calc(100vh - 100px)' }}>
+                <div style={{border:"2px solid red", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems:"center"}}>
                 <h2 className="mb-4 text-success">도서 구매 관련 공지사항</h2>
                 <div className="col-md-6 mb-4">
                 <div className="alert alert-info">
@@ -198,8 +244,10 @@ const QnA_Page = () => {
                     </div>
                 </div>
                 </div>
+                </div>
             </div>
-
+            </div>
+            </div>
         </>
     );
 };

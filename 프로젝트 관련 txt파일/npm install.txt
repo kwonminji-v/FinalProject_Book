@@ -2,3 +2,4 @@ npm install react-bootstrap bootstrap //부트스트랩
 npm install http-proxy-middleware --save //Proxy 설정 (CORS 오류 방지)
 npm install axios --save //axios 사용 위한 설정
 npm install --save @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic  -> 게시글 작성 시 속성 설정하는 도구 모음
+npm install react-quill
