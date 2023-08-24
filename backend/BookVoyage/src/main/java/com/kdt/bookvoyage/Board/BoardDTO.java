@@ -3,9 +3,14 @@ package com.kdt.bookvoyage.Board;
 
 
 
+import com.kdt.bookvoyage.Member.MemberEntity;
+import com.kdt.bookvoyage.Reply.ReplyDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Data
@@ -20,7 +25,7 @@ public class BoardDTO {
     private String content;
     private int view;
     private String regDate, modDate;
-    private Long memberId;
+    private List<ReplyDTO.ReplyResponseDTO> replies;
 
     public static BoardDTO EntityToDto(BoardEntity boardEntity) {
         ModelMapper modelMapper = new ModelMapper();
@@ -36,5 +41,6 @@ public class BoardDTO {
         this.view = boardEntity.getView();
         this.regDate = boardEntity.getRegDate();
         this.modDate = boardEntity.getModDate();
+        this.replies = boardEntity.getReplies().stream().map(ReplyDTO.ReplyResponseDTO::new).collect(Collectors.toList());
     }
 }

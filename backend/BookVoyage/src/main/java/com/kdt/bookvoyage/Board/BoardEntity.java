@@ -1,6 +1,7 @@
 package com.kdt.bookvoyage.Board;
 
 
+import com.kdt.bookvoyage.Member.MemberEntity;
 import com.kdt.bookvoyage.Reply.ReplyEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,12 +39,14 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "integer default 0", nullable = false, name = "b_view")
     private int view;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private MemberEntity memberEntity;
 
     //게시글과 댓글 Entity간의 관계를 나타내주는 어노테이션
     //mappedBy 속성은 주인이 되는 쪽의 연관관계를 지정해주며, 여기서는 ReplyEntity 클래스와
     //매핑되어, BoardEntity의 boardEntity 필드를 사용하여 양방향 관계를 설정
-    @OneToMany(mappedBy = "boardEntity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-
+    @OneToMany(mappedBy = "boardEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)
     @OrderBy("id asc") //댓글 정렬 기능
     private List<ReplyEntity> replies = new ArrayList<>();
 

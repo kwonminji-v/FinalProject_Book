@@ -32,6 +32,8 @@ const QnA_Page = () => {
         }
     };
 
+
+
     useEffect(() => {
         const getBoardList = async () => {
             console.log('게시글 목록 가져오는 메서드 실행');
@@ -43,10 +45,13 @@ const QnA_Page = () => {
         getBoardList();
     },[])
 
+
+
+
     useEffect(() => {
         fetchData(currentPage);
     }, [currentPage]);
-    
+
     const fetchData = async (page) => {
         try {
             const response = await axios.get(`/api/board/board-list?page=${page}&size=10`);
@@ -56,6 +61,20 @@ const QnA_Page = () => {
             console.error("페이징 데이터", error);
         }
     };
+
+/*    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`/api/board/board-list?page=${currentPage}&size=10`);
+                setData(response.data.content);
+                setTotalPages(response.data.totalPages);
+            } catch (error) {
+                console.error("페이징 데이터", error);
+            }
+        };
+    }, [currentPage]);*/
+
+
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -165,7 +184,7 @@ const QnA_Page = () => {
             <div style={{border:'2px solid red', width:'100vw', display:'flex', flexDirection:'column'}}>
             <div className="container mt-5" style={{paddingTop:' 100px', border:'2px solid black'}}>
                 <h1 className="text-center">자주 묻는 질문</h1>
-                <div className="accordion accordion-flush" id="faqAccordion">
+                <div className="accordion accordion-flush" id="faqAccordion" style={{display:'flex', justifyContent:'center'}}>
                 <div className="col-md-8" style={{display:'flex',flexDirection:'column', border:'2px solid black'}}>
                     {faqList.map((faq, index) => (
                         <div className="accordion-item" key={index}>
@@ -199,7 +218,7 @@ const QnA_Page = () => {
 
 
 
-            <QnA_BoardList data = {data} />
+                <QnA_BoardList data = {data} />
 
             <div className="container mt-4" style={{ border:'2px solid black', paddingTop: '100px', minHeight: 'calc(100vh - 100px)' }}>
                 <div style={{border:"2px solid red", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems:"center"}}>
