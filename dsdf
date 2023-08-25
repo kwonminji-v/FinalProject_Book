@@ -1,0 +1,84 @@
+[33mcommit af972add38f17d75de868db6fe2a691a91a08861[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: kwonminji <minji6313@yahoo.com>
+Date:   Sat Sep 23 00:52:40 2023 +0900
+
+    readme 정리
+
+[33mcommit 855d6cea8edb75da17f66935c3e54bd98a1adbfb[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Mon Sep 11 21:53:31 2023 +0900
+
+    project 마무리 단계
+
+[33mcommit d99786bc91b34521c8aa8cffd59baa41f33d939e[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Sun Sep 10 16:38:28 2023 +0900
+
+    프로젝트 마무리
+
+[33mcommit 25c6d7c0b6aeac63bddfc6b5a6a29d4932ea1f7b[m
+Merge: e180d37 2ad0b09
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Thu Aug 31 09:20:29 2023 +0900
+
+    3part 합본
+
+[33mcommit e180d3706bd432669f2fa157e40481c1c7a3c976[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Thu Aug 31 09:19:38 2023 +0900
+
+    3part 합본
+
+[33mcommit 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Tue Aug 29 21:16:07 2023 +0900
+
+    "git크라켄연결"
+
+[33mcommit 27e5e0e5e28f26216fb95b86fc43c22d6bab719f[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Tue Aug 29 21:16:07 2023 +0900
+
+    합본
+
+[33mcommit 838c2202261eebd476e7ed37cbfb382ff67ccce4[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Tue Aug 29 21:02:04 2023 +0900
+
+    댓글 구현중,,
+
+[33mcommit 460c05ad09c1c825fb39c8176df91cc0c38c494f[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Sun Aug 27 19:04:25 2023 +0900
+
+    #13. 페이징완료
+
+[33mcommit 687441c17d4887de109469ad1e70d931b1b61b90[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Sun Aug 27 15:53:00 2023 +0900
+
+    #12.수정하기 (editor ok)
+
+[33mcommit 42ea9c4bab55b683fc7b324998dcd05152a2c70d[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Thu Aug 24 18:33:38 2023 +0900
+
+    reply기능 구현
+
+[33mcommit f746f698e114cea65e0084065048143d2ff74324[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Thu Aug 24 01:15:22 2023 +0900
+
+    Paging 기능 구현 완료
+
+[33mcommit 464d87d30d60247ec928b7af1e746f65e45d72d9[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Tue Aug 22 20:32:43 2023 +0900
+
+    view
+
+[33mcommit 9bf782a31728f3d4296d41a31acdf6527bd898dd[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: minji6313 <minji6313@yahoo.com>
+Date:   Mon Aug 21 21:14:45 2023 +0900
+
+    commit message
