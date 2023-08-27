@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import '../css/board.module.css'
+import '../css/board.css'
 import EditorComponent from "../component/EditorComponent";
+import {getUserNumber} from "../js/getUserNumber";
 
 const QnA_CreateBoard = () => {
 
@@ -14,6 +15,7 @@ const QnA_CreateBoard = () => {
     const [modDate, setModDate] = useState(new Date());
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [warn, setWarn] = useState(false);
+    const [isAuthenticate, setIsAuthenticate] = useState(false)
 
     let navigate = useNavigate();  // 다른 Component들로 이동 시에 사용 (Link는 a 태그 개념, Navigation은 함수 실행이 끝나면서, 이동 발생)
 
@@ -27,10 +29,23 @@ const QnA_CreateBoard = () => {
         // HTML 문서의 해당 요소에 빈 값을 설정하여 입력 필드를 초기화합니다.
         document.getElementById('category_input').value = ' ';
         document.getElementById('title_input').value = ' ';
-        document.getElementById('content_text').value = ' ';
-        document.getElementById('writer_input').value = ' ';
 
     }
+
+    // getUserNumber().nickname
+
+
+    useLayoutEffect(()=>{
+        axios.get("/api/board/board-list/create-board/authenticate").then(() => {
+            setIsAuthenticate(true)
+            setWriter(getUserNumber().nickname)
+        }).catch(e => {
+            alert("로그인이 필요한 서비스입니다.")
+            window.location.href="../"
+            console.error(e);
+        })
+    },[])
+
 
     /** text-editor 메서드 */
     function onEditorChange(content) {
@@ -39,13 +54,14 @@ const QnA_CreateBoard = () => {
         setContent(cleanContent)
     }
 
-    const handleInputCheck = async(e) => {
+    const handleInputCheck = async (e) => {
+
+
+
         e.preventDefault();
         /** 사용할 입력 필드 초기화 - 새 게시글 작성 시 기존의 입력 내용이 지워지고 새로운 데이터 입력*/
         document.getElementById('category_input').value = ' ';
         document.getElementById('title_input').value = ' ';
-        document.getElementById('content_text').value = ' ';
-        document.getElementById('writer_input').value = ' ';
         console.log('게시글 작성');
 
         // 필수 필드 체크 및 경고 메시지
@@ -56,7 +72,7 @@ const QnA_CreateBoard = () => {
         }
 
         /** 요청할 데이터 객체 생성 */
-        const request_data = {title : title, category:category, content: content, writer:writer};
+        const request_data = {title: title, category: category, content: content, writer: writer};
         console.log("요청한 데이터", request_data);
 
         try {
@@ -64,8 +80,8 @@ const QnA_CreateBoard = () => {
             let response = await axios({
                 method: 'post',
                 url: '/api/board/create-board',
-                headers : {"Content-Type": 'application/json'}, //JSON형식의 데이터 전송 명시
-                data : request_data
+                headers: {"Content-Type": 'application/json'}, //JSON형식의 데이터 전송 명시
+                data: request_data
             });
 
             console.log("게시글 작성하기의 응답", response);
@@ -87,15 +103,19 @@ const QnA_CreateBoard = () => {
         }
     }
 
-        return (
-        <>
-            <div className="container" style={{width:'80vw',justifyContent:'center',display:'flex', flexDirection:'column'}} >
+
+
+
+    return (
+        <>{isAuthenticate ?
+            <div className="container"
+                 style={{width: '80vw', justifyContent: 'center', display: 'flex', flexDirection: 'column'}}>
                 <h1 className="mt-5 text-success text-center">글 작성</h1>
-                    <div style={{border:'2px solid #45b751', padding:'20px'}}>
-                        <div className="row justify-content-center mt-5">
-                            <div className="col-md-12">
-                                <form onSubmit={handleInputCheck}>
-                                    <div className="col-md-3 mb-4">
+                <div style={{border: '2px solid #45b751', padding: '20px'}}>
+                    <div className="row justify-content-center mt-5">
+                        <div className="col-md-12">
+                            <form onSubmit={handleInputCheck}>
+                                <div className="col-md-3 mb-4">
                                     <div className="form-group">
                                         <label htmlFor="category">카테고리를 선택하세요</label>
 
@@ -117,9 +137,9 @@ const QnA_CreateBoard = () => {
                                         {warn && category === "" && (
                                             <div className="text-danger">카테고리를 선택해주세요.</div>
                                         )}
-                                        </div>
                                     </div>
-                                    <div className="col-md-6 mb-4">
+                                </div>
+                                <div className="col-md-6 mb-4">
                                     <div className="form-group">
                                         <label htmlFor="title">제목을 입력하세요</label>
                                         <input
@@ -129,53 +149,48 @@ const QnA_CreateBoard = () => {
                                             value={title}
                                             onChange={(e) => {
                                                 setTitle(e.target.value);
-                                                setWarn(false) }}
+                                                setWarn(false)
+                                            }}
                                         />
                                         {warn && title === "" && (
                                             <div className="text-danger">제목을 입력해주세요.</div>
                                         )}
                                     </div>
-                                    </div>
-                                    <div className="col-md-7 mb-4">
+                                </div>
+
+                                <div className="col-md-7 mb-4">
                                     <div className="form-group">
                                         <label htmlFor="content">내용을 입력하세요</label>
                                         <EditorComponent
-                                                         id="content_text"
-                                                         className="form-control"
-                                                         rows="12"
-                                                         value={content}
-                                                         onChange={(newContent) => {
-                                                             onEditorChange(newContent);
-                                                             setWarn(false);
-                                                         }} />
+                                            dangerouslySetInnerHTML={{ __html: content }}
+                                            id="content_text"
+                                            className="form-control"
+                                            rows="12"
+                                            value={content}
+                                            onChange={(newContent) => {
+                                                onEditorChange(newContent);
+                                                setWarn(false);
+                                            }} />
+
                                         {warn && content === "" && (<div className="text-danger">내용을 입력해주세요</div>)}
                                     </div>
-                                    </div>
-                                    <div className="col-md-3 mb-4">
+                                </div>
+
+                                <div className="col-md-3 mb-4">
                                     <div className="form-group">
-                                        <label htmlFor="writer">이름을 입력하세요</label>
-                                        <input
-                                            type="text"
-                                            id="writer_input"
-                                            className="form-control"
-                                            value={writer}
-                                            onChange={(e) => {
-                                                setWriter(e.target.value);
-                                                setWarn(false) }}
-                                        />
-                                        {warn && writer === "" && (
-                                            <div className="text-danger">작성자를 입력해주세요</div>
-                                        )}
+                                        <p>작성자 : {writer}</p>
                                     </div>
-                                    </div>
-                                    <button type="submit" className="btn btn-success" onClick={handleInputCheck}>글 작성</button>
-                                </form>
-                            </div>
+                                </div>
+                                <button type="submit" className="btn btn-success" onClick={handleInputCheck}>글 작성
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </>
+            </div>:""}
+        </>
     )
-}
+};
 
 export default QnA_CreateBoard;
+
