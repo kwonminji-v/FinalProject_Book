@@ -13,6 +13,8 @@ const QnA_Page = (props) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [searchText, setSearchText] = useState("");
+
 
     // 데이터를 가져오는 함수
     const fetchBoardData = async () => {
@@ -60,24 +62,43 @@ const QnA_Page = (props) => {
     },[])
 
 
-    useEffect(() => {
-        fetchData(currentPage);
-    }, [currentPage]);
+    const fetchData = async (page, search) => {
 
-    const fetchData = async (page) => {
         try {
+            const response = await axios.get(`/api/board/board-list`, {
+                params: {
+                    page,
+                    size: 10,
+                    search,
+                },
+            });
+            setData(response.data.content);
+            setTotalPages(response.data.totalPages);
+
+
+/*        try {
             const response = await axios.get(`/api/board/board-list?page=${page}&size=10`);
             setData(response.data.content);
             setTotalPages(response.data.totalPages);
-            console.log(data, totalPages, response.data.content.length);
+            console.log(data, totalPages, response.data.content.length);*/
 
         } catch (error) {
             console.error("페이징 데이터", error);
         }
     };
 
+    useEffect(() => {
+        fetchData(currentPage, searchText);
+    }, [currentPage,  searchText]);
+
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
+    };
+
+    const handleSearch = (text) => {
+        setSearchText(text);
+        setCurrentPage(0);
     };
 
     return (
@@ -117,7 +138,7 @@ const QnA_Page = (props) => {
                 </div>
                 </div>
 
-                <QnA_BoardList data = {data} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <QnA_BoardList data = {data} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} handleSearch={handleSearch}/>
 
 
             <div className="container mt-4" style={{ border:'2px solid black', paddingTop: '100px', minHeight: 'calc(100vh - 100px)' }}>

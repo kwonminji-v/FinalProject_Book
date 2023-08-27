@@ -32,10 +32,9 @@ const QnA_CreateBoard = () => {
 
     }
 
-    // getUserNumber().nickname
 
 
-    useLayoutEffect(()=>{
+/*    useLayoutEffect(()=>{
         axios.get("/api/board/board-list/create-board/authenticate").then(() => {
             setIsAuthenticate(true)
             setWriter(getUserNumber().nickname)
@@ -44,16 +43,16 @@ const QnA_CreateBoard = () => {
             window.location.href="../"
             console.error(e);
         })
-    },[])
+    },[])*/
 
 
     /** text-editor 메서드 */
-    function onEditorChange(content) {
-        const cleanContent = content.replace(/<\/?[^>]+(>|$)/g, ''
-        );
-        setContent(cleanContent)
-    }
 
+    function onEditorChange(newContent) {
+        /*        const cleanContent = content.replace(/<\/?[^>]+(>|$)/g, ''
+                );*/
+        setContent(newContent)
+    }
     const handleInputCheck = async (e) => {
 
 
@@ -105,9 +104,106 @@ const QnA_CreateBoard = () => {
 
 
 
-
     return (
-        <>{isAuthenticate ?
+        <>
+            <div className="container"
+                 style={{width: '80vw', justifyContent: 'center', display: 'flex', flexDirection: 'column'}}>
+                <h1 className="mt-5 text-success text-center">글 작성</h1>
+                <div style={{border: '2px solid #45b751', padding: '20px'}}>
+                    <div className="row justify-content-center mt-5">
+                        <div className="col-md-12">
+                            <form onSubmit={handleInputCheck}>
+                                <div className="col-md-3 mb-4">
+                                    <div className="form-group">
+                                        <label htmlFor="category">카테고리를 선택하세요</label>
+
+                                        <select
+                                            id="category_input"
+                                            className="form-control"
+                                            value={category}
+                                            onChange={(e) => {
+                                                setCategory(e.target.value);
+                                                setWarn(false) //카테고리가 선택되면 경고메세지는 사라짐
+                                            }}
+                                        >
+                                            <option value="">카테고리 선택</option>
+                                            <option value="주문 및 배송">주문 및 배송</option>
+                                            <option value="교환 및 환불">교환 및 환불</option>
+                                            <option value="회원 가입">회원 가입</option>
+                                            <option value="도서 예약">도서 예약</option>
+                                        </select>
+                                        {warn && category === "" && (
+                                            <div className="text-danger">카테고리를 선택해주세요.</div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="col-md-6 mb-4">
+                                    <div className="form-group">
+                                        <label htmlFor="title">제목을 입력하세요</label>
+                                        <input
+                                            type="text"
+                                            id="title_input"
+                                            className="form-control"
+                                            value={title}
+                                            onChange={(e) => {
+                                                setTitle(e.target.value);
+                                                setWarn(false)
+                                            }}
+                                        />
+                                        {warn && title === "" && (
+                                            <div className="text-danger">제목을 입력해주세요.</div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="col-md-7 mb-4">
+                                    <div className="form-group">
+                                        <label htmlFor="content">내용을 입력하세요</label>
+                                        <EditorComponent
+                                            dangerouslySetInnerHTML={{ __html: content }}
+                                            id="content_text"
+                                            className="form-control"
+                                            rows="12"
+                                            value={content}
+                                            onChange={(newContent) => {
+                                                onEditorChange(newContent);
+                                                setWarn(false);
+                                            }} />
+
+                                        {warn && content === "" && (<div className="text-danger">내용을 입력해주세요</div>)}
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="writer">이름을 입력하세요</label>
+                                    <input
+                                        type="text"
+                                        id="writer_input"
+                                        className="form-control"
+                                        value={writer}
+                                        onChange={(e) => {
+                                            setWriter(e.target.value);
+                                            setWarn(false) }}
+                                    />
+                                    {warn && writer === "" && (
+                                        <div className="text-danger">작성자를 입력해주세요</div>
+                                    )}
+                                </div>
+                                <button type="submit" className="btn btn-success" onClick={handleInputCheck}>글 작성
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+};
+
+export default QnA_CreateBoard;
+
+/*
+*         <>{isAuthenticate ?
             <div className="container"
                  style={{width: '80vw', justifyContent: 'center', display: 'flex', flexDirection: 'column'}}>
                 <h1 className="mt-5 text-success text-center">글 작성</h1>
@@ -188,9 +284,4 @@ const QnA_CreateBoard = () => {
                     </div>
                 </div>
             </div>:""}
-        </>
-    )
-};
-
-export default QnA_CreateBoard;
-
+        </>*/

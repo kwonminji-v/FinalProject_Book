@@ -142,11 +142,9 @@ const QnA_UpdateBoard = () => {
                                     onEditorChange(newContent);
                                     setWarn(false);
                                 }} />
-
                             {warn && content === "" && (<div className="text-danger">내용을 입력해주세요</div>)}
                         </div>
                     </div>
-
                     <div className="col-md-6 mb-4">
                     <p>작성자: {pre_writer}</p>
                     <button
