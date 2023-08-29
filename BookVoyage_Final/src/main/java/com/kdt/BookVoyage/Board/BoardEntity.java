@@ -1,6 +1,7 @@
 package com.kdt.BookVoyage.Board;
 
 
+import com.kdt.BookVoyage.Common.TimeBaseEntity;
 import com.kdt.BookVoyage.Member.MemberEntity;
 import com.kdt.BookVoyage.Reply.ReplyEntity;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @NoArgsConstructor
@@ -18,7 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "BOARD")
 @ToString(of = {"id, title"})
-public class BoardEntity extends BaseEntity {
+public class BoardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +33,7 @@ public class BoardEntity extends BaseEntity {
     @Column(name = "b_category", nullable = false)
     private String category;
 
-    @Column(name = "b_writer", nullable = false, unique = true)
+    @Column(name = "b_writer", nullable = false)
     private String writer;
 
     @Column(name = "b_content")
@@ -40,7 +42,7 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "integer default 0", nullable = false, name = "b_view")
     private int view;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private MemberEntity memberEntity;
 
@@ -50,6 +52,10 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "boardEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)
     @OrderBy("id asc") //댓글 정렬 기능
     private List<ReplyEntity> replies = new ArrayList<>();
+
+
+    @Embedded
+    private TimeBaseEntity timeBaseEntity;
 
     public static BoardEntity DtoToEntity(BoardDTO boardDTO) {
         ModelMapper modelMapper = new ModelMapper();
@@ -64,4 +70,5 @@ public class BoardEntity extends BaseEntity {
         this.content = content;
         this.view = view;
     }
+
 }

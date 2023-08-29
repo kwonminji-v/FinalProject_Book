@@ -130,7 +130,7 @@ export default function SignUpPage() {
 
     const validateEmail = () => {
 
-        expireTime=20
+        expireTime=180
         setIsEmailValidate(false)
         setReAuthenticateEmail(false)
 
@@ -248,14 +248,14 @@ export default function SignUpPage() {
 
     }
 
-    // let i=210000;
+    // let i=10;
     // const createAccount = () => {
     //     i++;
     //
     //     axios.post("/api/user/signUp", null, {
     //         params: {
     //             userId: "qwer" + i,
-    //             password: "rkddkwl1!",
+    //             password: "qwer123!",
     //             username: "박재원",
     //             nickname: "재원씨야호" + i,
     //             userEmail: "ploii" + i + "@naver.com",
@@ -277,7 +277,7 @@ export default function SignUpPage() {
     //         })
     //     console.log(i)
     // }
-    // window.setInterval(createAccount,100);
+    // window.setInterval(createAccount,300);
 
     const [modalOpen, setModalOpen] = useState(false)
 
@@ -442,7 +442,7 @@ export default function SignUpPage() {
                            placeholder=""/>
                 </div>
                 <div>
-                    <div><span>*</span> 상세 주소</div>
+                    <div>상세 주소</div>
                     <input name={"detailAddress"} ref={address} type="text" placeholder=""/>
                 </div>
 

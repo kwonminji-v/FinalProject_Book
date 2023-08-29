@@ -8,7 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -23,16 +26,16 @@ public class MemberController {
 
     @PostMapping("/signUp") //회원 가입
     public boolean signUp(@Valid MemberDTO memberDTO) throws Exception {
-        return memberService.signUp(memberDTO);
+       return memberService.signUp(memberDTO);
     }
 
     @GetMapping("/signUp/idValidation") //아이디 중복 검증
-    public boolean idValidation(@Valid MemberDTO memberDTO) {
+    public boolean idValidation(@Valid MemberDTO memberDTO){
         return memberService.idDuplicateValidation(memberDTO);
     }
 
     @GetMapping("/signUp/nicknameValidation") //닉네임 중복검증
-    public boolean nicknameValidation(@Valid MemberDTO memberDTO) {
+    public boolean nicknameValidation(@Valid MemberDTO memberDTO){
         return memberService.nicknameDuplicateValidation(memberDTO);
     }
 
@@ -41,6 +44,7 @@ public class MemberController {
         return memberService.emailDuplicateValidation(emailDTO);
     }
 
+
     @GetMapping("/signUp/email/auth") // 회원가입 시 이메일 인증
     public boolean emailAuthentication(EmailDTO emailDTO) throws AuthenticationFailedException {
         return memberService.emailAuthentication(emailDTO);
@@ -48,7 +52,7 @@ public class MemberController {
 
     @GetMapping("/logIn") //로그인
     public Object login(MemberDTO memberDTO, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        return memberService.login(memberDTO, request, response);
+       return memberService.login(memberDTO, request, response);
     }
 
     @GetMapping("/logOut") //로그아웃
@@ -66,14 +70,15 @@ public class MemberController {
         return memberService.myInfoAuth(memberDTO);
     }
 
-    @PostMapping("/update") // 본인 정보 업데이트
+    @PostMapping("/myPage/update") // 본인 정보 업데이트
     public boolean modifyInfo(@Valid MemberDTO memberDTO) { //회원 정보 수정
         return memberService.modifyInfo(memberDTO);
     }
 
+
     @GetMapping("/findMyInfo/byEmail")// 아이디찾기(이메일값 넘기고 인증번호 받기)
     public List<String> findId(@Valid MemberDTO memberDTO) {
-        return emailService.findIdByEmail(memberDTO);
+       return emailService.findIdByEmail(memberDTO);
     }
 
     @GetMapping("/findMyInfo/byEmail/auth")// 아이디찾기(전송된 인증번호 입력하기)
@@ -92,17 +97,19 @@ public class MemberController {
     }
 
     @PostMapping("/findMyInfo/resetAndModifyPassword") // 비밀번호 초기화 후 재설정
-    public void resetAndModifyPassword(MemberDTO memberDTO) {
+    public void resetAndModifyPassword(MemberDTO memberDTO){
         emailService.resetAndModifyPasswordByEmail(memberDTO);
     }
 
-    @PostMapping("/withdrawal") //회원탈퇴
+    @PostMapping("/withdrawal") //활성 -> 휴면 전환
     public void withdrawal(MemberDTO memberDTO) {
         memberService.withdrawal(memberDTO);
     }
 
-    @PostMapping("/dormantAccount") //휴면 -> 일반 전환
+    @PostMapping("/dormantAccount") //휴면 -> 활성 전환
     public void wakeUpDormantAccount(MemberDTO memberDTO) {
         memberService.withdrawal1(memberDTO);
     }
+
+
 }
