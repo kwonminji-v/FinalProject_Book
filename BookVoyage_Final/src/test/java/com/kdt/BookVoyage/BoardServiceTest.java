@@ -2,6 +2,7 @@ package com.kdt.BookVoyage;
 
 
 
+
 import com.kdt.BookVoyage.Board.BoardDTO;
 import com.kdt.BookVoyage.Board.BoardEntity;
 import com.kdt.BookVoyage.Board.BoardRepository;
@@ -40,7 +41,7 @@ public class BoardServiceTest {
     @Test
     public void writeBoard() {
 
-        IntStream.rangeClosed(1,101).forEach(i -> {
+        IntStream.rangeClosed(1,150).forEach(i -> {
 
             BoardEntity boardEntity = BoardEntity.builder()
                     .category("샘플 카테고리..." + i)

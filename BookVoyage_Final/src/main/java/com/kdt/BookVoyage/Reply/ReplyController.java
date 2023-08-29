@@ -30,12 +30,19 @@ public class ReplyController {
 
     @GetMapping("/board-detail/{id}/reply-list")
     public ResponseEntity<List<ReplyDTO.ReplyResponseDTO>> getReplies(@PathVariable Long id) {
+
         List<ReplyEntity> replyList = replyService.findReplyList(id);
+
         List<ReplyDTO.ReplyResponseDTO> responseDTOList = replyList.stream()
-                .map(ReplyDTO.ReplyResponseDTO::new)
+                .map(reply -> {
+                    ReplyDTO.ReplyResponseDTO responseDTO = new ReplyDTO.ReplyResponseDTO(reply);
+                    responseDTO.setNickname(reply.getMemberEntity().getNickname()); // 닉네임 추가
+                    return responseDTO;
+                })
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(responseDTOList);
+
     }
 
 }

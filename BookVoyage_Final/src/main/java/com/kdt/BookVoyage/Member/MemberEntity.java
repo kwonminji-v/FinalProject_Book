@@ -1,11 +1,16 @@
 package com.kdt.BookVoyage.Member;
 
+import com.kdt.BookVoyage.Board.BoardEntity;
 import com.kdt.BookVoyage.Common.TimeBaseEntity;
+import com.kdt.BookVoyage.Reply.ReplyEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "MEMBER_INFO")
@@ -42,9 +47,14 @@ public class MemberEntity {
     @Column(nullable = false, unique = true)
     private String userNumber; //회원 고유번호 (난수)
 
+
+    @OneToMany(mappedBy = "memberEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)
+    @OrderBy("id asc") //댓글 정렬 기능
+    private List<BoardEntity> boards = new ArrayList<>();
+
+
     @Embedded
     private TimeBaseEntity timeBaseEntity;
-
 
     public static MemberEntity DTOToEntity(MemberDTO memberDTO) {
         ModelMapper modelMapper = new ModelMapper();
@@ -58,6 +68,5 @@ public class MemberEntity {
 
         return modelMapper.map(memberDTO, MemberEntity.class);
     }
-
 
 }

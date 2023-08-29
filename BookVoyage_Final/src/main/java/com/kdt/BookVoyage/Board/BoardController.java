@@ -1,6 +1,11 @@
 package com.kdt.BookVoyage.Board;
 
 
+import com.kdt.BookVoyage.Member.MemberDTO;
+import com.kdt.BookVoyage.Member.MemberEntity;
+import com.kdt.BookVoyage.Member.MemberRepository;
+import com.kdt.BookVoyage.Member.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -10,10 +15,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -22,6 +32,9 @@ import java.util.Map;
 public class BoardController {
 
     private final BoardService boardService;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
+
 
 
     @GetMapping("/board-list")
@@ -48,30 +61,41 @@ public class BoardController {
 
     }
 
-    @PostMapping("/create-board")
-    public ResponseEntity create_board(@RequestBody BoardDTO boardDTO) {
 
-        System.out.println("게시글 작성 완료 = " + boardDTO);
+
+
+    @PostMapping("/create-board")
+    public ResponseEntity create_board(@RequestBody BoardDTO boardDTO ) {
+        System.out.println("게시글 작성 요청 받음 = " + boardDTO);
         HttpHeaders headers = new HttpHeaders();
         Map<String, String> body = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED; //201 메세지로 잘 생성되었음을 확인
 
         try{
+
             BoardEntity boardEntity = new BoardEntity (
-                            boardDTO.getId(),
-                            boardDTO.getTitle(),
-                            boardDTO.getCategory(),
-                            boardDTO.getWriter(),
-                            boardDTO.getContent(),
-                            boardDTO.getView()
+                    boardDTO.getId(),
+                    boardDTO.getTitle(),
+                    boardDTO.getCategory(),
+                    boardDTO.getWriter(),
+                    boardDTO.getContent(),
+                    boardDTO.getView()
             );
+
             boardService.create(boardEntity);
+
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "게시글 작성 완료");
+            responseBody.put("timeBaseEntity", boardEntity.getTimeBaseEntity()); // 작성 시간 정보 추가
+
         }catch (Exception exception) {
             status = HttpStatus.BAD_REQUEST;  //404에러
             System.out.println("게시글 작성 예외 발생 : " + exception);
         }
-        return new ResponseEntity(body, headers, status);
+        return new ResponseEntity<>(body, headers, status);
     }
+
+
 
     @PutMapping("/update-board")
     public ResponseEntity update_board(@RequestBody BoardDTO boardDTO) {
@@ -84,6 +108,7 @@ public class BoardController {
                     boardDTO.getTitle(),
                     boardDTO.getCategory(),
                     boardDTO.getContent());
+                    LocalDateTime.now();
         } catch (Exception exception) {
             status = HttpStatus.BAD_REQUEST;  // 400에러 발생
             System.out.println("게시글 수정 에러 발생 = " + exception);
@@ -108,9 +133,14 @@ public class BoardController {
         return new ResponseEntity(body, headers, status);
     }
 
-    @GetMapping("/board-list/create-board/authenticate")
+    @GetMapping("/create-board/authenticate")
     public void createBoardAuthenticate() {
         log.info("성공");
+    }
+
+    @GetMapping("/update-board/authenticate")
+    public void updateBoardAuthenticate() {
+        log.info("============================= 수정 권한 메서드 ok =================================");
     }
 
 

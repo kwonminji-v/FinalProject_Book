@@ -5,14 +5,12 @@ import com.kdt.BookVoyage.Board.BaseEntity;
 import com.kdt.BookVoyage.Board.BoardEntity;
 import com.kdt.BookVoyage.Member.MemberEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity
-@Getter @Builder
+@Getter @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "REPLY")
@@ -21,6 +19,9 @@ public class ReplyEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String nickname;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String reply; // 댓글 내용
@@ -40,8 +41,6 @@ public class ReplyEntity extends BaseEntity {
         }
         return null;
     }
-
-
 
 }
 

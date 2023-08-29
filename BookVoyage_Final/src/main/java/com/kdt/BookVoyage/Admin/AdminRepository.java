@@ -14,7 +14,7 @@ public interface AdminRepository extends JpaRepository<MemberEntity,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "insert into test.member_info (" +
+    @Query(value = "insert into book.member_info (" +
             "username, " +
             "user_id, " +
             "password, " +
@@ -32,7 +32,7 @@ public interface AdminRepository extends JpaRepository<MemberEntity,Long> {
             "values(" +
             "'박재원'," +
             " 'admin'," +
-            "'rkddkwl1!'," +
+            "'EKgiLEB3935gh3'," +
             "'재원이야'," +
             "''," +
             "''," +

@@ -17,6 +17,7 @@ public class ReplyDTO {
     public static class ReplyRequestDTO {
 
         private Long id;
+        private String nickname;
         private String reply;
         private String regDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         private String modDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
@@ -27,6 +28,7 @@ public class ReplyDTO {
             ReplyEntity replyEntity = ReplyEntity.builder()
                     .id(id)
                     .reply(reply)
+                    .nickname(nickname)
                     .boardEntity(boardEntity)
                     .build();
 
@@ -44,9 +46,9 @@ public class ReplyDTO {
     public static class ReplyResponseDTO {
         private Long id;
         private String reply;
+        private String nickname;
         private String regDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         private String modDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
-        private String nickname;
         private Long boardId;
 
 
@@ -56,7 +58,12 @@ public class ReplyDTO {
             this.reply = replyEntity.getReply();
             this.regDate = replyEntity.getRegDate();
             this.modDate = replyEntity.getModDate();
+            this.nickname = replyEntity.getNickname();
             this.boardId = replyEntity.getBoardEntity().getId();
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
         }
     }
 
