@@ -305,4 +305,12 @@ public class MemberServiceImpl implements MemberService {
             throw new UserIdNotFoundException("아이디가 존재하지 않습니다.");
         }
     }
+<<<<<<< HEAD
+=======
+
+    public void findByUserNumber(MemberDTO memberDTO) {
+        Optional<MemberEntity> findUserNumber = memberRepository.findByUserNumber(memberDTO.getUserNumber());
+    }
+
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
 }

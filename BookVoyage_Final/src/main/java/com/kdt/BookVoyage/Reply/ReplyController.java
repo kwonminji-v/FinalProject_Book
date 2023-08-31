@@ -51,6 +51,7 @@ public class ReplyController {
 
     }
 
+<<<<<<< HEAD
 //    @PostMapping("/board-detail/reply-list/{id}")
 //    public ResponseEntity<ReplyDTO.ReplyResponseDTO> replyCreate(@PathVariable Long id, @RequestBody ReplyDTO.ReplyRequestDTO dto, Principal principal) {
 //
@@ -68,12 +69,17 @@ public class ReplyController {
 
     @GetMapping("/board-detail/reply-list/{id}")
     public ResponseEntity<List<ReplyDTO.ReplyResponseDTO>> reply_list(@PathVariable Long id) {
+=======
+    @GetMapping("/board-detail/{id}/reply-list")
+    public ResponseEntity<List<ReplyDTO.ReplyResponseDTO>> getReplies(@PathVariable Long id) {
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
 
         List<ReplyEntity> replyList = replyService.findReplyList(id);
 
         List<ReplyDTO.ReplyResponseDTO> responseDTOList = replyList.stream()
                 .map(reply -> {
                     ReplyDTO.ReplyResponseDTO responseDTO = new ReplyDTO.ReplyResponseDTO(reply);
+<<<<<<< HEAD
                     // Null 체크 후 닉네임 설정
 
                     if (reply.getNickname() != null) {
@@ -81,6 +87,9 @@ public class ReplyController {
                     } else {
                         responseDTO.setNickname("Unknown"); // 또는 원하는 다른 값으로 설정
                     }
+=======
+                    responseDTO.setNickname(reply.getMemberEntity().getNickname()); // 닉네임 추가
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
                     return responseDTO;
                 })
                 .collect(Collectors.toList());

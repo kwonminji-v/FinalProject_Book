@@ -3,6 +3,14 @@ package com.kdt.BookVoyage.Board;
 
 
 
+<<<<<<< HEAD:BookVoyage_Final/src/test/java/com/kdt/BookVoyage/Board/BoardServiceTest.java
+=======
+
+import com.kdt.BookVoyage.Board.BoardDTO;
+import com.kdt.BookVoyage.Board.BoardEntity;
+import com.kdt.BookVoyage.Board.BoardRepository;
+import com.kdt.BookVoyage.Board.BoardService;
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8:BookVoyage_Final/src/test/java/com/kdt/BookVoyage/BoardServiceTest.java
 import com.kdt.BookVoyage.Member.MemberDTO;
 import com.kdt.BookVoyage.Member.MemberEntity;
 import com.kdt.BookVoyage.Member.MemberRepository;

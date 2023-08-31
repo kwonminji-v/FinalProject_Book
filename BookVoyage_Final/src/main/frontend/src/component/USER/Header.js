@@ -12,15 +12,21 @@ export default function Header() {
     const [userNumber, setUserNumber] = useState("0")
     const [searchValue, setSearchValue] = useState("");
     const navigate = useNavigate();
+<<<<<<< HEAD
     
+=======
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
 
     const handleChange = (e) => {
     setSearchValue(e.target.value);
     navigate(`/search?q=${e.target.value}`)}
+<<<<<<< HEAD
 
     const handleClick = () => {
         navigate("/cart");
     }
+=======
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
 
     useEffect(() => {
         setUserNumber(getUserNumber().userNumber);

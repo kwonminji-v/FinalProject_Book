@@ -2,13 +2,21 @@ import {Link, useLocation} from "react-router-dom";
 import {React, useEffect, useState} from "react";
 import QnA_BoardBox from "./QnA_BoardBox";
 import axios from "axios";
+<<<<<<< HEAD
 import styles from '../../css/BOARD/board.module.css'
+=======
+import '../../css/board.css';
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
 import QnA_BoardPagination from "./QnA_BoardPagination";
 
 
 const QnA_BoardList = (props) => {
 
+<<<<<<< HEAD
     const {currentPage, totalPages, onPageChange, handleSearch, formattedCreatedTime} = props;
+=======
+    const {currentPage, totalPages, onPageChange, handleSearch , formattedCreatedTime} = props;
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
     const [searchText, setSearchText] = useState("");
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false);
@@ -156,6 +164,101 @@ export default QnA_BoardList;
 {/*            <div className="container text-center" style={{paddingTop: ' 100px', border: '2px solid black'}}>
                 <h1 className="mt-5">문의 게시판</h1>
                 <br/>
+<<<<<<< HEAD
+                <div className="col-md-7" style={{marginLeft:'900px'}}>
+                    <div className="col-md-6" style={{display:'flex'}}>
+=======
+                <div className="col-md-7" style={{marginLeft: '900px'}}>
+                    <div className="col-md-6" style={{display: 'flex'}}>
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search..."
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                        />
+                        <button className="btn btn-success" style={{marginLeft: '15px'}}
+                                onClick={() => handleSearch(searchText)}>
+                            Search
+                        </button>
+                    </div>
+                </div>
+                <div className="row justify-content-center mt-5">
+                    <div className="col-md-12">
+                        <table className="table table-bordered table-hover shadow-lg">
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>카테고리</th>
+                                <th>제목</th>
+                                <th>내용</th>
+                                <th>작성자</th>
+                                <th>조회수</th>
+                                <th>작성 일자</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {Array.isArray(props.data) && props.data.length !== 0 ? (
+                                props.data.map((i, index) => (
+                                    <QnA_BoardBox
+                                        key={i.id}
+                                        id={i.id} //게시글 번호 역순으로 생성
+                                        title={i.title}
+                                        category={i.category}
+                                        content={i.content.replace(/<[^>]+>/g, '')}
+                                        writer={i.writer}
+                                        view={i.view}
+                                        createdTime={i.createdTime}
+<<<<<<< HEAD
+                                        currentPage={currentPage + 1}
+                                    />
+
+=======
+                                        formattedCreatedTime={formattedCreatedTime}
+                                        currentPage={currentPage + 1}
+                                    />
+
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="8" style={{ textAlign: "center" }}>
+                                        <div className="spinner-border text-primary-emphasis" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                        <QnA_BoardPagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={onPageChange}
+                        />
+                    </div>
+                    <div className="col-md-6 mb-4"
+                         style={{padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <button
+                            type="submit"
+                            className="btn btn-success mt-4"
+                            onClick={authenticate}
+                        >
+                            게시글 작성하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+            )
+        </>
+    );
+};
+
+export default QnA_BoardList;
+
+{/*            <div className="container text-center" style={{paddingTop: ' 100px', border: '2px solid black'}}>
+                <h1 className="mt-5">문의 게시판</h1>
+                <br/>
                 <div className="col-md-7" style={{marginLeft:'900px'}}>
                     <div className="col-md-6" style={{display:'flex'}}>
                         <input
@@ -200,6 +303,7 @@ export default QnA_BoardList;
                                         currentPage={currentPage + 1}
                                     />
 
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
                                 ))
                             ) : (
                                 <tr>
@@ -224,5 +328,9 @@ export default QnA_BoardList;
                             </button>
                         </div>
                 </div>
+<<<<<<< HEAD
             </div>*/
 }
+=======
+            </div>*/}
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8

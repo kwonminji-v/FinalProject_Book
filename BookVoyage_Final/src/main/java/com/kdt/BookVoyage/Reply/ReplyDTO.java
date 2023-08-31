@@ -58,12 +58,17 @@ public class ReplyDTO {
             this.reply = replyEntity.getReply();
             this.regDate = replyEntity.getRegDate();
             this.modDate = replyEntity.getModDate();
+            this.nickname = replyEntity.getNickname();
             this.boardId = replyEntity.getBoardEntity().getId();
             if(replyEntity.getMemberEntity() != null) {
                 this.nickname = replyEntity.getMemberEntity().getNickname();
             }
         }
 
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
 
         public void setNickname(String nickname) {
             this.nickname = nickname;

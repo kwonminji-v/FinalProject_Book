@@ -6,10 +6,17 @@ export default function CategoryHeader() {
         <div className={style.container}>
             <div className={style.main}>
                 <Link to={"/home"}>홈</Link>
+<<<<<<< HEAD
                 <Link as={Link} to={"/home/booklist/"}>All</Link>
                 <Link as={Link} to={"/home/novels"}>소설/시/희곡</Link>
                 <Link as={Link} to={"/home/economics"}>경제/경영</Link>
                 <Link as={Link} to={"/home/developments"}>자기개발</Link>
+=======
+                <Link as={Link} to={"/home/booklist"}>All</Link>
+                <Link as={Link} to={"/home/novels"}>소설/시/희곡</Link>
+                <Link as={Link} to={"/home/economics"}>경제/경영</Link>
+                <Link as={Link} to={"/home/developments"}>자기계발</Link>
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
                 <Link as={Link} to={"/home/children"}>어린이</Link>
                 <Link as={Link} to={"/home/foreign"}>외국어</Link>
                 <Link as={Link} to={"/home/board"}>문의게시판</Link>

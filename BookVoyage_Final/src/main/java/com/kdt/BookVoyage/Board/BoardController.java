@@ -1,8 +1,16 @@
 package com.kdt.BookVoyage.Board;
 
 
+<<<<<<< HEAD
 import com.kdt.BookVoyage.Member.MemberRepository;
 import com.kdt.BookVoyage.Member.MemberService;
+=======
+import com.kdt.BookVoyage.Member.MemberDTO;
+import com.kdt.BookVoyage.Member.MemberEntity;
+import com.kdt.BookVoyage.Member.MemberRepository;
+import com.kdt.BookVoyage.Member.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,11 +20,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
+=======
+import java.lang.reflect.Member;
+>>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController

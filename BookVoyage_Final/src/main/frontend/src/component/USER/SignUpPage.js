@@ -255,7 +255,7 @@ export default function SignUpPage() {
     //     axios.post("/api/user/signUp", null, {
     //         params: {
     //             userId: "qwer" + i,
-    //             password: "rkddkwl1!",
+    //             password: "qwer123!",
     //             username: "박재원",
     //             nickname: "재원씨야호" + i,
     //             userEmail: "ploii" + i + "@naver.com",
@@ -277,7 +277,7 @@ export default function SignUpPage() {
     //         })
     //     console.log(i)
     // }
-    // window.setInterval(createAccount,100);
+    // window.setInterval(createAccount,300);
 
     const [modalOpen, setModalOpen] = useState(false)
 
