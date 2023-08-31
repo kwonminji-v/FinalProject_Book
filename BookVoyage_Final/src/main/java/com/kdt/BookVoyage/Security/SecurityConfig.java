@@ -21,7 +21,6 @@ public class SecurityConfig {
     private final TokenDecoder tokenDecoder;
     private final CookieConfig cookieConfig;
     private final MemberRepository memberRepository;
-    private final CustomCSRFRequestHandler customCSRFRequestHandler;
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
@@ -31,7 +30,6 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/api/user/board/**").authenticated() //게시글 관련
                                 .requestMatchers("/api/user/logIn").permitAll() //로그인
                                 .requestMatchers("/api/admin/login").permitAll() // 관리자 로그인
                                 .requestMatchers("/api/user/signUp/**").permitAll() //회원 가입
@@ -43,6 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/user/board/**").hasRole("USER") //게시글 관련
                                 .requestMatchers("/api/user/myPage/**").hasRole("USER") //내 페이지 관련
                                 .requestMatchers("/api/user/withdrawal").hasRole("USER") //회원탈퇴
+                                .requestMatchers("/api/user/purchase/**").hasRole("USER") //회원탈퇴
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/api/admin/autoLogin").hasRole("ADMIN") //로그인
                                 .requestMatchers("/api/search/**").permitAll() // api 호출 결과 db에 저장
@@ -50,14 +49,6 @@ public class SecurityConfig {
                                 .requestMatchers("/api/bookdetail").permitAll() // 도서 전체 조회 결과
                                 .requestMatchers("/api/search").permitAll() // 검색창에 도서 검색
                                 .requestMatchers("/api/detail/**").permitAll()  // 도서 상세 정보 표시
-                                .requestMatchers("/api/board/board-list").permitAll()
-                                .requestMatchers("/api/board/board-detail/**").permitAll()
-                                .requestMatchers("/api/board/board-detail/**/reply-list").authenticated()
-                                .requestMatchers("/api/board/delete-board").permitAll()
-                                .requestMatchers("/api/board/update-board").permitAll()
-                                .requestMatchers("/api/board/create-board/**").authenticated()
-                                .requestMatchers("/api/book/**").authenticated()
-
                 )
 
                 .addFilterBefore(new JwtFilter(tokenConfig,tokenDecoder, cookieConfig, new ModelMapper(), memberRepository), UsernamePasswordAuthenticationFilter.class)

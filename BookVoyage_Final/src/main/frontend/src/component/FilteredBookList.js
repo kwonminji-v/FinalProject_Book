@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import Button from "./common/Button";
-import {Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import Parser from 'html-react-parser';
 import DOMPurify from 'dompurify';
+import {getUserNumber} from "../js/getUserNumber";
 
 function FilteredBookList({category}) {
     const [filteredBookList, setFilteredBookList] = useState([]);
@@ -29,6 +29,33 @@ function FilteredBookList({category}) {
                 console.error("데이터를 가져오는데 실패했다 : ", error);
             });
     }, []);
+
+
+    const goToPurchase =(isbn) =>{
+        const userNumber = getUserNumber().userNumber;
+
+        if(userNumber){
+            const sessionStorage= window.sessionStorage;
+            let item = sessionStorage.getItem(isbn);
+
+            if(item){
+                ++item;
+                sessionStorage.setItem(isbn,item)
+            }
+            else{
+                sessionStorage.setItem(isbn,1)
+            }
+            window.location.href="/home/purchase"
+        }
+        else {
+            const ret = window.confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")
+            if(ret){
+                window.location.href="/home/logIn"
+            }
+
+        }
+
+    }
 
     return (
         <div className="container1">
@@ -56,7 +83,7 @@ function FilteredBookList({category}) {
                             return (
                                 <li className="book-list" key={key}>
                                     <div className="book-cover">
-                                        <Link to={`/bookdetail/${bookDetail.isbn13}`}>
+                                        <Link to={`/home/bookdetail/${bookDetail.isbn13}`}>
                                             <img
                                                 src={bookDetail.previewImgList[0]}
                                                 width="180px"
@@ -68,7 +95,7 @@ function FilteredBookList({category}) {
                                     <div className="info">
                                         <div className="book-title">
                                             <Link
-                                                to={`/bookdetail/${bookDetail.isbn13}`}>{Parser(DOMPurify.sanitize(bookDetail.title))}</Link>
+                                                to={`/home/bookdetail/${bookDetail.isbn13}`}>{Parser(DOMPurify.sanitize(bookDetail.title))}</Link>
                                         </div>
                                         <div className="author-pub">
                                             {bookDetail.author} · {bookDetail.publisher} ·{" "}
@@ -92,7 +119,7 @@ function FilteredBookList({category}) {
                                             <Button violet="true" fullWidth>장바구니 담기</Button>
                                         </div>
                                         <div className="btn-buy">
-                                            <Button green="true" fullWidth>구매하기</Button>
+                                            <Button onClick={()=>{goToPurchase(bookDetail.isbn13)}} green="true" fullWidth>구매하기</Button>
                                         </div>
                                     </div>
                                 </li>

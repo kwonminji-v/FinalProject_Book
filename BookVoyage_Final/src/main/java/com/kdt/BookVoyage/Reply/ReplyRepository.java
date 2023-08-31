@@ -9,4 +9,5 @@ public interface ReplyRepository extends JpaRepository<ReplyEntity, Long> {
     List<ReplyEntity> findByBoardEntity_Id(Long boardId);
 
 
+
 }

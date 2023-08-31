@@ -1,18 +1,17 @@
 # 프로젝트 :  도서 판매 관리 시스템
 #
 
-# 맡은 부분 : 회원관리 파트
+# 맡은 부분 : 회원관리 & 결제 파트
 ## 사용 환경 
 #### OS : window 11 pro
 #### RAM : 16g
 #### IDE : Intellij
-
 #
 ## 프론트엔드 
 ##
 
 ### 프레임워크 : 리액트 18 ver.
-### 라이브러리 : react-router-dom, react-daum-postcode, http-proxy-middleware, axios, react-modal, apexcharts
+### 라이브러리 : react-router-dom, react-daum-postcode, http-proxy-middleware, axios, react-modal, apexcharts, react-intersection-observer, html-react-parser, dompurify, react-bootstrap
 
 #
 
@@ -118,6 +117,14 @@
 #### 7) 회원 블락 처리 추가 (관리자가 블락을 걸면 해당 사용자가 인증이 필요한 서비스에 접근이 안되도록 즉시 적용)
 
 #
+## 결제기능
+#### 1) 결제하기 또는 장바구니에 담을 시 결제창으로 이동한다.
+#### 2) 구매하기 페이지는 서버의 부담을 덜기위해 세션스토리지에 담은 데이터를 기반으로 한다.
+#### 3) PG사는 PortOne을 활용했고 개발자 모드로 진행하기 때문에 결제는 되나 익일 자정에 환불된다.
+#### 4) 
+
+
+#
 ## API
 #
 ## /api/admin (관리자 기능 api)
@@ -175,5 +182,7 @@
 #### /byEmailAndId/auth : 암호 찾기에서 전송된 인증코드를 검사 후 인증 시 유저 고유 코드를 리턴하는 기능(유저 고유코드는 이 다음 과정의 암호 재설정에서 유저 고유코드에 해당하는 암호를 바꾸기 위해 사용)
 #### /resetAndModifyPassword : 이 전에서 받은 유저 고유코드와 입력한 새로운 암호를 update하는 기능
 
+#
+### 결제 기능(/purchase)
 
 

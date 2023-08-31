@@ -1,12 +1,8 @@
-package com.kdt.BookVoyage;
+package com.kdt.BookVoyage.Board;
 
 
 
 
-import com.kdt.BookVoyage.Board.BoardDTO;
-import com.kdt.BookVoyage.Board.BoardEntity;
-import com.kdt.BookVoyage.Board.BoardRepository;
-import com.kdt.BookVoyage.Board.BoardService;
 import com.kdt.BookVoyage.Member.MemberDTO;
 import com.kdt.BookVoyage.Member.MemberEntity;
 import com.kdt.BookVoyage.Member.MemberRepository;

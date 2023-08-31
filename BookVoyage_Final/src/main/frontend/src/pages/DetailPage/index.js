@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
-import {Col, Container, Row} from "react-bootstrap";
-import {useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
 import Button from "../../component/common/Button";
 import "../../css/BookDetail.css";
 import {styled} from "styled-components";
 import Parser from 'html-react-parser';
 import DOMPurify from 'dompurify';
+import {getUserNumber} from "../../js/getUserNumber";
 
 function BookDetailPage() {
     const {isbn13} = useParams(); // 리액트 라우터로부터 도서 id를 받아옴
@@ -24,13 +24,13 @@ function BookDetailPage() {
 
             switch (e.target.id) {
                 case "plus": {
-                    if(quantity >= 1&& quantity<=9)
+                    if(1 <= quantity && quantity <= 98)
                     setQuantity(val => ++val)
                     console.log("+ : ",quantity)
                 }
                     break;
                 case "minus" : {
-                    if(quantity>=2 && quantity<=10)
+                    if(2 <= quantity && quantity<=99)
                     setQuantity(val => --val)
                     console.log("- : ",quantity)
                 }
@@ -90,6 +90,34 @@ function BookDetailPage() {
       width: 150px;
     `;
 
+
+    const goToPurchase =(isbn) =>{
+        const userNumber = getUserNumber().userNumber;
+
+        if(userNumber){
+            const sessionStorage= window.sessionStorage;
+            let item = sessionStorage.getItem(isbn);
+            let item_number = parseInt(item)
+
+            if(item_number){
+                item_number +=quantity
+                sessionStorage.setItem(isbn,item_number)
+            }
+            else{
+                sessionStorage.setItem(isbn,quantity)
+            }
+            window.location.href="/home/purchase"
+        }
+        else {
+            const ret = window.confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")
+            if(ret){
+                window.location.href="/home/logIn"
+            }
+
+        }
+
+    }
+
     return (
         <>
             <div className="book-detail-page">
@@ -144,14 +172,14 @@ function BookDetailPage() {
                                         justifyContent: "space-between",
                                         alignItems: "center"
                                     }}>
-                                        <p id={"minus"} style={{cursor: "pointer"}} onClick={handleQuantity}>-</p>
+                                        <p id={"minus"} style={{cursor: "pointer", fontSize:"24px"}} onClick={handleQuantity}>-</p>
                                         <input
                                             type="number"
                                             name="number_select"
                                             readOnly
                                             value={quantity}  // 수량 상태를 입력값에 바인딩
                                         />
-                                        <p id={"plus"} style={{cursor: "pointer"}} onClick={handleQuantity}>+</p>
+                                        <p id={"plus"} style={{cursor: "pointer", fontSize:"24px"}} onClick={handleQuantity}>+</p>
                                     </div>
 
                                 </td>
@@ -168,7 +196,7 @@ function BookDetailPage() {
                             <ButtonWithMarginHeight violet="true">
                                 장바구니 담기
                             </ButtonWithMarginHeight>
-                            <ButtonWithMarginHeight green="true">
+                            <ButtonWithMarginHeight onClick={()=>{goToPurchase(isbn13)}} green="true">
                                 구매하기
                             </ButtonWithMarginHeight>
                         </div>
@@ -241,7 +269,7 @@ function BookDetailPage() {
                         </tr>
                         <tr>
                             <th>출판사 제공 책소개</th>
-                            <td>
+                            <td className="last-td">
                                 {bookDetails.previewImgList.length > 0 && (
                                     <>
                                         <img src={bookDetails.previewImgList[0]}

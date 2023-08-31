@@ -1,13 +1,13 @@
 package com.kdt.BookVoyage.Reply;
 
 
-
 import com.kdt.BookVoyage.Board.BoardEntity;
 import com.kdt.BookVoyage.Board.BoardRepository;
+import com.kdt.BookVoyage.Member.MemberEntity;
+import com.kdt.BookVoyage.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -17,9 +17,74 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     /** 댓글 작성 api */
     @Transactional
+    public ReplyDTO.ReplyResponseDTO replyCreate(Long id, ReplyDTO.ReplyRequestDTO dto, String logInUserNickname) {
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("댓글 작성 실패 : 해당 게시글이 존재하지 않습니다." + id));
+
+        MemberEntity memberEntity = memberRepository.findByNickname(logInUserNickname)
+                .orElseThrow(() -> new IllegalArgumentException("해당 닉네임의 사용자가 없습니다."));
+
+        dto.setBoardEntity(boardEntity);
+
+        ReplyEntity replyEntity = dto.toEntity();
+        replyEntity.setMemberEntity(memberEntity); // Set the MemberEntity
+
+        replyRepository.save(replyEntity);
+
+        ReplyDTO.ReplyResponseDTO responseDTO = new ReplyDTO.ReplyResponseDTO(replyEntity);
+        responseDTO.setNickname(logInUserNickname); // Set the nickname in the response DTO
+
+        return responseDTO;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+/*    @Transactional
+    public Long replyCreate(Long id, ReplyDTO.ReplyRequestDTO dto, String logInUserNickname) {
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("댓글 작성 실패 : 해당 게시글이 존재하지 않습니다." + id));
+
+        // MemberEntity를 가져오는 로직 (예시: 닉네임을 이용하여 조회)
+*//*        MemberEntity memberEntity = memberRepository.findByNickname(logInUserNickname)
+                .orElseThrow(() -> new IllegalArgumentException("해당 닉네임의 사용자가 없습니다."));*//*
+
+        dto.setBoardEntity(boardEntity);
+
+        ReplyEntity replyEntity = dto.toEntity();
+        replyRepository.save(replyEntity);
+
+        return replyEntity.getId();
+
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*    @Transactional
     public Long replyCreate(Long id, ReplyDTO.ReplyRequestDTO dto) {
         BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(() ->
             new IllegalArgumentException("댓글 작성 실패 : 해당 게시글이 존재하지 않습니다." + id));
@@ -31,7 +96,12 @@ public class ReplyService {
 
         return replyEntity.getId();
 
-        }
+        }*/
+
+
+
+
+
 
     public List<ReplyEntity> findReplyList(Long boardId) {
         return replyRepository.findByBoardEntity_Id(boardId);
