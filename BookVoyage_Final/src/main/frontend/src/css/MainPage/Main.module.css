@@ -1,0 +1,62 @@
+.link {
+  text-decoration: none;
+}
+.container{
+  width:75%;
+  margin: 100px auto;
+}
+.hotItem {
+  font-weight: bold;
+  margin: 40px 0;
+}
+
+.hotItemList {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.hotItemList >  li {
+  width: 280px;
+}
+
+.author, .category {
+  color: #595959;
+  font-size: 0.9rem;
+}
+
+.bookInfo {
+  width: 90%;
+}
+
+.bookTitle {
+  font-size: 1.1rem;
+  padding: 10px 0;
+}
+
+.loading {
+  height: 500px;
+  position: relative;
+}
+
+.loading > img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rank {
+  width: 25px;
+  height: 18px;
+  background-color: #767676;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  margin-bottom: 10px;
+  border-radius: 6px 0;
+}
+
+
+

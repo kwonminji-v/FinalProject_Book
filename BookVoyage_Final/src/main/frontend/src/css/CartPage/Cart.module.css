@@ -1,0 +1,82 @@
+.tblItemWrap {
+  width: 100%;
+}
+
+.tblItem {
+  /* border: 1px solid gray; */
+  width: 70%;
+  margin: 50px auto;
+}
+
+caption {
+  font-size: 2rem;
+  text-align: left;
+  margin-bottom: 50px;
+}
+
+
+.tblItemWrap > .tblItem > tbody > tr > td {
+  padding: 30px;
+  box-sizing: content-box;
+  white-space: nowrap;
+
+}
+
+.checkbox {
+  width: 80px;
+  text-align: center;
+ 
+}
+
+.checkbox input {
+  transform: scale(1.5);
+
+}
+
+.itemArea {
+  display: flex;
+}
+
+.green {
+  color: #4DAC27;
+  margin-right: 10px;
+}
+
+.itemInfoBox {
+  margin: 0 20px;
+  line-height: 30px;
+}
+
+.del {
+  font-size: 0.8rem;
+  color: #595959;
+}
+
+.center {
+  text-align: center;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.btn {
+  margin: 0 10px;
+}
+
+.num {
+  width: 40px;
+  height: 20px;
+  text-align: center;
+}
+
+.empty {
+
+  font-size: 100px;
+}
+
+.title {
+  font-size: 1.2rem;
+}

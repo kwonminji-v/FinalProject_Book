@@ -1,15 +1,16 @@
 package com.kdt.BookVoyage.Member;
 
-import com.kdt.BookVoyage.Board.BoardEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kdt.BookVoyage.Cart.CartEntity;
 import com.kdt.BookVoyage.Common.TimeBaseEntity;
-import com.kdt.BookVoyage.Reply.ReplyEntity;
+import com.kdt.BookVoyage.Order.OrderEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,15 +47,18 @@ public class MemberEntity {
     private String deleteFlag;// DB에서 완전 삭제 대신 값이 0일때 비활성화 처리. 추후 계정 복구를 위함
     @Column(nullable = false, unique = true)
     private String userNumber; //회원 고유번호 (난수)
-
-
-    @OneToMany(mappedBy = "memberEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)
-    @OrderBy("id asc") //댓글 정렬 기능
-    private List<BoardEntity> boards = new ArrayList<>();
-
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private CartEntity cart;
 
     @Embedded
     private TimeBaseEntity timeBaseEntity;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "memberEntity",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderEntity> orderEntityList;
+
+
 
     public static MemberEntity DTOToEntity(MemberDTO memberDTO) {
         ModelMapper modelMapper = new ModelMapper();

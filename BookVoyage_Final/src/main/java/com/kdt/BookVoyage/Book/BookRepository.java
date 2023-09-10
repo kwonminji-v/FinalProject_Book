@@ -11,6 +11,13 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
     Page<BookEntity> findAll(Pageable pageable);
     List<BookEntity> findBooksByTitleContaining(String title);
-
     BookEntity findBookByIsbn13(String isbn13);
+    List<BookEntity> findByBookIdIn(List<Long> ids);
+
+    BookEntity deleteByIsbn13(String isbn13);
+
+    BookEntity findByIsbn13Containing(String isbn13);
+
+    Page<BookEntity> searchByIsbn13ContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrTitleContainingIgnoreCaseOrPublisherContainingIgnoreCase(String keyword, String keyword1, String keyword2, String keyword3, Pageable pageable);
+
 }

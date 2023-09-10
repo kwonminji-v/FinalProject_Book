@@ -1,35 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import AppAdmin from "./AppAdmin";
-import AdminPageControl from "./js/AdminPageControl";
+import {BrowserRouter} from 'react-router-dom'
 import HomeAddress from "./js/HomeAddress";
-
+import {Provider} from "react-redux";
+import {configureStore} from "@reduxjs/toolkit";
+import combineReducers from "./js/combineReducers";
+import Apps from "./Apps";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const store = configureStore({
+    reducer:combineReducers
+})
+
 root.render(
-    <BrowserRouter>
-        <HomeAddress/>
-
-
-            <div id={"userOnly"} style={{width: "100vw", minWidth: "1296px", height: "auto", position: "relative"}}>
-                <App/>
-            </div>
-
-            <div id={"adminOnly"}
-                 style={{width: "100vw", minWidth: "1440px", minHeight: "1024px", height: "100vh", position: "relative"}}>
-                <AppAdmin/>
-            </div>
-
-
-
-        <Routes>
-            <Route path={"/board/*"} element={<AdminPageControl/>}/>
-            <Route path={"/book/*"} element={<AdminPageControl/>}/>
-            <Route path={"/*"} element={<AdminPageControl/>}/>
-        </Routes>
-
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <HomeAddress/>
+            <Apps/>
+        </BrowserRouter>
+    </Provider>
 );
 

@@ -1,11 +1,13 @@
 package com.kdt.BookVoyage.Cart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kdt.BookVoyage.CartItem.CartItemEntity;
 import com.kdt.BookVoyage.Member.MemberEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -16,17 +18,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "cart")
 public class CartEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private MemberEntity member;    // 회원
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
     private List<CartItemEntity> cartItems = new ArrayList<>();
 
     private int quantity;   // 카트에 담긴 총 상품 개수

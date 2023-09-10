@@ -1,0 +1,117 @@
+*{
+    margin: 0; padding: 0;
+    font-family: 'kakao';
+    font-weight: 600;
+}
+a {
+    color:black;
+    text-decoration: none;
+}
+
+@font-face {
+    font-family: 'kakao';
+    src:url("../../fonts/KakaoRegular.ttf");
+}
+.container {
+    width: 100%;
+    height: 100px;
+    min-width: 1024px;
+    position: sticky;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #45b751;
+    top: 0;
+    z-index: 10;
+
+}
+.logo{
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo > a {
+    margin-left: 50px;
+    color: #45B751 !important;
+    font-size: 32px;
+    text-decoration: none;
+}
+
+.functionBox {
+    min-width: 738px;
+    width: auto;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    margin:0 20px;
+    background-color: transparent;
+    font-size: 30px;
+    color: #b0b0b0;
+}
+
+.myInfo {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    margin:0 20px 0 10px;
+    background-color: transparent;
+    font-size: 30px;
+    color: #b0b0b0;
+}
+
+.search {
+    width: 350px;
+    height: 44px;
+    border-radius: 30px;
+    border: 1px solid #9E9E9E;
+    outline-color: #45B751;
+    padding-left: 20px;
+}
+
+.signUp {
+    width: 99px;
+    height: 33px;
+    border: 1px solid #45B751;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #45B751;
+    transition: color 0.3s, background-color 0.3s;
+    cursor: pointer;
+    margin:0 20px;
+    font-size: 16px;
+}
+
+.signUp:hover {
+    color: white;
+    background-color: #45B751;
+    border: none;
+}
+
+.logIn {
+    width: 89px;
+    height: 35px;
+    background-color: #45B751;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    margin-right: 20px;
+    transition: color 0.3s, background-color 0.3s;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.logIn:hover {
+    color: #45B751;
+    background-color: #fff;
+    border: 1px solid #45B751;
+}

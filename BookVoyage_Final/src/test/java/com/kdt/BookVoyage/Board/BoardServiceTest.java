@@ -3,14 +3,6 @@ package com.kdt.BookVoyage.Board;
 
 
 
-<<<<<<< HEAD:BookVoyage_Final/src/test/java/com/kdt/BookVoyage/Board/BoardServiceTest.java
-=======
-
-import com.kdt.BookVoyage.Board.BoardDTO;
-import com.kdt.BookVoyage.Board.BoardEntity;
-import com.kdt.BookVoyage.Board.BoardRepository;
-import com.kdt.BookVoyage.Board.BoardService;
->>>>>>> 2ad0b09e9a1ff773062c6cc4a97723b9f2a5f9d8:BookVoyage_Final/src/test/java/com/kdt/BookVoyage/BoardServiceTest.java
 import com.kdt.BookVoyage.Member.MemberDTO;
 import com.kdt.BookVoyage.Member.MemberEntity;
 import com.kdt.BookVoyage.Member.MemberRepository;
@@ -45,13 +37,13 @@ public class BoardServiceTest {
     @Test
     public void writeBoard() {
 
-        IntStream.rangeClosed(1,150).forEach(i -> {
+        IntStream.rangeClosed(1,2).forEach(i -> {
 
             BoardEntity boardEntity = BoardEntity.builder()
-                    .category("샘플 카테고리..." + i)
-                    .title("샘플 제목..." + i)
-                    .content("샘플 내용..." + i)
-                    .writer("샘플 작성자..." + i)
+                    .category("교환 및 환불")
+                    .title("환불은 언제까지에요?" + i)
+                    .content("잘못 주문해가지고 취소하려고 합니당 ..." + i)
+                    .writer("강아지" + i)
                     .build();
             boardRepository.save(boardEntity);
         });
@@ -132,7 +124,6 @@ public class BoardServiceTest {
 
         boardService.delete(boardEntity);
 
-        // TODO: assert statements to verify the result
     }
 
     @Test

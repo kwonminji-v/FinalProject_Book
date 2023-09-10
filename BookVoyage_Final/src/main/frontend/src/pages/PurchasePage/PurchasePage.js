@@ -1,16 +1,17 @@
 import axios from "axios";
 import React, {useEffect, useRef, useState} from "react";
-import style from "../../css/USER/purchasePage.module.css"
+import style from "../../css/PurchasePage/purchasePage.module.css"
 import {getUserNumber} from "../../js/getUserNumber";
 import Payment from "../../js/Payment";
 import {Link, useNavigate} from "react-router-dom";
+import convertToWon from "../../js/convertToWon";
 
 export default function PurchasePage() {
 
     const [userInfo, setUserInfo] = useState([{}]);
     const [bookInfo, setBookInfo] = useState([{}]);
     const [loading, setLoading] = useState(false);
-    const [amount, setAmount] = useState([]);
+    const [amounts, setAmounts] = useState([]);
     const [purchaseLength, setPurchaseLength] = useState(window.sessionStorage.length)
     const quantity = useRef([])
     const goBack = useNavigate()
@@ -21,17 +22,6 @@ export default function PurchasePage() {
     const userTel_R = useRef()
     const userAddress_R = useRef()
     let totalPrice = 0
-
-    let orderData={
-        order_name:"BookVoyage",
-        order_username:username_R,
-        order_price:totalPrice,
-        order_Address:userAddress_R,
-        order_Tel : userTel_R,
-        order_Email : userInfo.userEmail,
-        order_userNumber:userInfo.userNumber,
-
-    }
 
     useEffect(()=>{
         axios.get("/api/user/purchase/userInfo", {
@@ -48,7 +38,7 @@ export default function PurchasePage() {
                 }
                 else goBack(-1)
             })
-    },[])
+    },[goBack])
 
     useEffect(() => {
 
@@ -68,7 +58,7 @@ export default function PurchasePage() {
             .then(res => {
                 setBookInfo(res.data);
                 setLoading(true)
-                setAmount(() => {
+                setAmounts(() => {
                     const arr = []
 
                     for (let i = 0; i < res.data.length; i++) {
@@ -86,37 +76,20 @@ export default function PurchasePage() {
     }, [purchaseLength])
 
 
-    const convertToWon = (val, n) => {
-        let flip = 0
-        let temp = ""
-        let result = ""
+    useEffect(()=>{
 
-        try {
+        if(amounts.length!==0){
+            for(let i=0; i<sessionStorage.length; i++){
 
-            if (n !== null) {
-                let val1 = (val * n).toString()
-                flip = val1.split("").reverse().join("")
+                sessionStorage.setItem(sessionStorage.key(i), amounts[i])
             }
-            if (n === null) flip = val.split("").reverse().join("")
-
-            for (let i = 1; i <= flip.length; i++) {
-
-                temp += flip.charAt(i - 1)
-                if (i % 3 === 0 && i<=flip.length-1) {
-                    temp += ","
-                }
-            }
-
-            result = temp.split("").reverse().join("")
-        } catch (e) {
-            console.error(e)
         }
 
-
-        return result
-    }
+    },[amounts])
 
 
+    let key;
+    let value;
     const handleQuantity = (e) => {
 
         const id = e.target.id
@@ -125,14 +98,14 @@ export default function PurchasePage() {
 
 
         switch (cases) {
-            case "plus": {
+            case "plus":
                 if (1 <= quantity.current[listNum].value && quantity.current[listNum].value <= 98) {
-                    setAmount(el => {
+                    setAmounts(el => {
                         const newArr = [...el]
 
-                        for (let i = 0; i < amount.length; i++) {
+                        for (let i = 0; i < amounts.length; i++) {
                             if (i === parseInt(listNum)) {
-                                newArr[i]++
+                                ++newArr[i]
                             }
                         }
 
@@ -140,27 +113,32 @@ export default function PurchasePage() {
                     })
 
                 }
-            }
                 break;
-            case "minus" : {
+
+            case "minus" :
                 if (2 <= quantity.current[listNum].value && quantity.current[listNum].value <= 99) {
-                    setAmount(el => {
+                    setAmounts(el => {
                         const newArr = [...el]
 
-                        for (let i = 0; i < amount.length; i++) {
+                        for (let i = 0; i < amounts.length; i++) {
                             if (i === parseInt(listNum)) {
-                                newArr[i]--
+                                --newArr[i]
                             }
                         }
 
                         return newArr
                     })
+
                 }
-            }
                 break;
+
             default:
                 console.log(cases)
         }
+
+        key = sessionStorage.key(listNum)
+        value = amounts[listNum]
+
 
     }
 
@@ -170,17 +148,11 @@ export default function PurchasePage() {
 
     }
 
-    const aaaaa =()=>{
-        console.log(userTel_R.current.value)
-        console.log(userAddress_R.current.value)
-        console.log(username_R.current.value)
-    }
-
     return (
-        <div className={style.container}>
+         <div className={style.container}>
             <h1>구매하기</h1>
-            <div className={style.main}>
-                {loading ? <>
+              <div className={style.main}>
+                {loading && userInfo ? <>
                         <div className={style.section2}>
                             <div className={style.purchaseListHeader}>
                                 <div className={style.bookCover}>책 커버</div>
@@ -197,7 +169,7 @@ export default function PurchasePage() {
                                 const priceSales = el.body.priceSales
                                 const isbn = el.body.isbn13
 
-                                totalPrice = totalPrice + priceSales * amount[idx]
+                                totalPrice = totalPrice + priceSales * amounts[idx]
 
                                 return (
                                     <div key={idx} className={style.purchaseList}>
@@ -212,9 +184,9 @@ export default function PurchasePage() {
 
                                         <div style={{height:"50%"}} className={style.bookPrice}>
                                             <strike style={{color: "gray", fontSize: "14px"}}>정가
-                                                : {convertToWon(priceStandard, null)}</strike>
+                                                : {convertToWon(priceStandard.toString(), null)} 원</strike>
                                             <i className="fa-solid fa-arrow-down"></i>
-                                            <span>할인가 : {convertToWon(priceSales, null)}</span>
+                                            <span>할인가 : {convertToWon(priceSales.toString(), null)} 원</span>
                                         </div>
 
                                         <div className={style.bookAmount}>
@@ -225,14 +197,14 @@ export default function PurchasePage() {
                                                 type="number"
                                                 name="number_select"
                                                 readOnly
-                                                value={amount[idx]}  // 수량 상태를 입력값에 바인딩
+                                                value={amounts[idx]}  // 수량 상태를 입력값에 바인딩
                                             />
                                             <p id={"plus " + idx} style={{cursor: "pointer", fontSize:"24px"}} onClick={handleQuantity}>+</p>
                                         </div>
 
                                         <div className={style.bookTotalPrice}>
                                             <span
-                                                style={{color: "red"}}>총 금액 : {convertToWon(priceSales, amount[idx])} 원</span>
+                                                style={{color: "red"}}>총 금액 : {convertToWon(priceSales.toString(), amounts[idx])} 원</span>
                                         </div>
 
                                         <button className={style.deleteBtn} id={isbn} onClick={deleteBooks}>삭제</button>
@@ -288,7 +260,6 @@ export default function PurchasePage() {
                                 </div>
                             </div>
                         </div>
-
                             <Payment
                             username={username_R.current}
                             userTel = {userTel_R.current}
@@ -297,8 +268,6 @@ export default function PurchasePage() {
                             userNumber = {userInfo.userNumber}
                             price = {totalPrice}
                             />
-                    <button onClick={aaaaa}>fghhgfd</button>
-
                     </>
                     : (purchaseLength <= 0 ? <div className={style.noPurchaseList}>
                         <p style={{fontSize: "150px"}}>텅</p>

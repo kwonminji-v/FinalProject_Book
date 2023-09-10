@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @NoArgsConstructor
@@ -19,7 +18,7 @@ import java.util.Optional;
 @Data
 @Entity
 @Table(name = "BOARD")
-@ToString(of = {"id, title"})
+@ToString(of = {"title"})
 public class BoardEntity {
 
     @Id
@@ -46,6 +45,8 @@ public class BoardEntity {
     @JoinColumn(name = "MEMBER_ID")
     private MemberEntity memberEntity;
 
+    private Long replyCount;
+
     //게시글과 댓글 Entity간의 관계를 나타내주는 어노테이션
     //mappedBy 속성은 주인이 되는 쪽의 연관관계를 지정해주며, 여기서는 ReplyEntity 클래스와
     //매핑되어, BoardEntity의 boardEntity 필드를 사용하여 양방향 관계를 설정
@@ -62,6 +63,10 @@ public class BoardEntity {
         return modelMapper.map(boardDTO, BoardEntity.class);
     }
 
+    public void setReplyCount(Long replyCount) {
+        this.replyCount = replyCount;
+    }
+
     public BoardEntity(Long id, String title, String category, String writer, String content, int view) {
         this.id = id;
         this.title = title;
@@ -69,6 +74,13 @@ public class BoardEntity {
         this.writer = writer;
         this.content = content;
         this.view = view;
+    }
+
+    public TimeBaseEntity getTimeBaseEntity() {
+        if (this.timeBaseEntity == null) {
+            this.timeBaseEntity = new TimeBaseEntity();
+        }
+        return this.timeBaseEntity;
     }
 
 }

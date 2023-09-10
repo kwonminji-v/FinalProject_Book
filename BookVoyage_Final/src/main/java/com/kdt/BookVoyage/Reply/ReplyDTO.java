@@ -3,12 +3,14 @@ package com.kdt.BookVoyage.Reply;
 
 
 import com.kdt.BookVoyage.Board.BoardEntity;
+import com.kdt.BookVoyage.Member.MemberEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ReplyDTO {
+public class
+ReplyDTO {
 
     @Data
     @AllArgsConstructor
@@ -22,14 +24,15 @@ public class ReplyDTO {
         private String regDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         private String modDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         private BoardEntity boardEntity;
+        private MemberEntity memberEntity; //memberEntity추가
 
         /* Dto -> Entity */
         public ReplyEntity toEntity() {
             ReplyEntity replyEntity = ReplyEntity.builder()
-                    .id(id)
                     .reply(reply)
                     .nickname(nickname)
                     .boardEntity(boardEntity)
+                    .memberEntity(memberEntity)
                     .build();
 
             return replyEntity;
@@ -58,17 +61,13 @@ public class ReplyDTO {
             this.reply = replyEntity.getReply();
             this.regDate = replyEntity.getRegDate();
             this.modDate = replyEntity.getModDate();
-            this.nickname = replyEntity.getNickname();
             this.boardId = replyEntity.getBoardEntity().getId();
+
             if(replyEntity.getMemberEntity() != null) {
                 this.nickname = replyEntity.getMemberEntity().getNickname();
             }
         }
 
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
 
         public void setNickname(String nickname) {
             this.nickname = nickname;

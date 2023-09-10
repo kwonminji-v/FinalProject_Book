@@ -1,9 +1,15 @@
 package com.kdt.BookVoyage.Book;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kdt.BookVoyage.CartItem.CartItemEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -31,10 +37,10 @@ public class BookEntity {
     private String fullDescription2;
 
     @Column(name = "price_sales")
-    private String priceSales;
+    private Integer priceSales;
 
     @Column(name = "price_std")
-    private String priceStandard;
+    private Integer priceStandard;
 
     private String publisher;
 
@@ -65,4 +71,11 @@ public class BookEntity {
 
     @Column(name = "author_photo")
     private String authorPhoto;
+
+    @Column
+    private String remain;
+
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    private List<CartItemEntity> cartItems = new ArrayList<>(); // cart item
 }

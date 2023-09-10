@@ -23,7 +23,7 @@ public class ReplyEntity extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String reply; // 댓글 내용
 
     @ManyToOne
@@ -31,7 +31,7 @@ public class ReplyEntity extends BaseEntity {
     private BoardEntity boardEntity;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_USERNAME")
+    @JoinColumn(name = "MEMBER_ID")
     private MemberEntity memberEntity;
 
     @Transient
